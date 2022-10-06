@@ -17,6 +17,8 @@ public partial class CameraController : MonoBehaviour
 
     void Awake()
     {
+        if (!enabled) return;
+
         _inputOperator = new InputOperator();
         _inputOperator.Enable();
 

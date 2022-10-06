@@ -4,19 +4,18 @@ using System;
 
 public class Move : MonoStateBase
 {
-    Vector3 _beforePos;
-
+    Player _player;
     AnimOperator _animOperator;
 
     public override void Setup()
     {
-        _animOperator = UserRetentionData.GetRetentionData<AnimOperator>(nameof(AnimOperator));
-        _beforePos = UserRetentionData.User.transform.position;
+        _player = UserRetentionData.GetData<Player>(nameof(Player));
+        _animOperator = UserRetentionData.GetData<AnimOperator>(nameof(AnimOperator));
     }
 
     public override void OnEnable()
     {
-        _animOperator.PlayRequest("", 0.2f);
+        _animOperator.PlayRequest("Run", 0.2f);
     }
 
     public override void Execute()
@@ -26,10 +25,8 @@ public class Move : MonoStateBase
 
     public override Enum Exit()
     {
-        Vector3 currentPos = UserRetentionData.User.transform.position;
-        if (_beforePos != currentPos)
+        if (_player.IsMove)
         {
-            _beforePos = currentPos;
             return Player.State.Move;
         }
         else

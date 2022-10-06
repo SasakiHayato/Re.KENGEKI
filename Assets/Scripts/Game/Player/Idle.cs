@@ -5,19 +5,17 @@ using System;
 public class Idle : MonoStateBase
 {
     AnimOperator _animOperator;
-
-    Vector3 _beforePos;
+    Player _player;
 
     public override void Setup()
     {
-        _animOperator = UserRetentionData.GetRetentionData<AnimOperator>(nameof(AnimOperator));
-        _beforePos = UserRetentionData.User.transform.position;
-
+        _player = UserRetentionData.GetData<Player>(nameof(Player));
+        _animOperator = UserRetentionData.GetData<AnimOperator>(nameof(AnimOperator));
     }
 
     public override void OnEnable()
     {
-        
+        _animOperator.PlayRequest("Idle", 0.2f);
     }
 
     public override void Execute()
@@ -27,10 +25,8 @@ public class Idle : MonoStateBase
 
     public override Enum Exit()
     {
-        Vector3 currentPos = UserRetentionData.User.transform.position;
-        if (_beforePos != currentPos)
+        if (_player.IsMove)
         {
-            _beforePos = currentPos;
             return Player.State.Move;
         }
         else
