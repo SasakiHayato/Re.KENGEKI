@@ -15,7 +15,7 @@ public class Move : MonoStateBase
 
     public override void OnEnable()
     {
-        _animOperator.PlayRequest("Run", 0.2f);
+        _animOperator.PlayRequest("Run", 0.1f);
     }
 
     public override void Execute()
@@ -25,7 +25,7 @@ public class Move : MonoStateBase
 
     public override Enum Exit()
     {
-        if (_player.IsMove)
+        if (_player.OnMove)
         {
             return Player.State.Move;
         }

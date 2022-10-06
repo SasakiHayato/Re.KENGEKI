@@ -25,7 +25,25 @@ public class Player : MonoBehaviour, IRetentionData
 
     MonoStateMachine<Player> _stateMachine;
 
-    public bool IsMove { get; private set; } 
+    /// <summary>
+    /// true‚È‚çs“®’†
+    /// </summary>
+    public bool OnMove
+    {
+        get
+        {
+            Vector2 dir = _inputOperator.Player.Move.ReadValue<Vector2>();
+
+            if (Mathf.Abs(dir.x) <= 0 && Mathf.Abs(dir.y) <= 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
 
     readonly float Gravity = Physics.gravity.y;
 
@@ -80,15 +98,6 @@ public class Player : MonoBehaviour, IRetentionData
         else
         {
             move = new Vector3(dir.x, 0, dir.y) * _moveSpeed;
-        }
-
-        if (Mathf.Abs(dir.x) <= 0 && Mathf.Abs(dir.y) <= 0)
-        {
-            IsMove = false;
-        }
-        else
-        {
-            IsMove = true;
         }
 
         move.y = Gravity;
