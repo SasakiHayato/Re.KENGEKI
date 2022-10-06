@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 1;
 
+    Vector3 _beforePos;
+
     Rigidbody _rb;
     InputOperator _inputOperator;
 
@@ -22,11 +24,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _beforePos = transform.position;
     }
 
     void Update()
     {
         Move(_inputOperator.Player.Move.ReadValue<Vector2>());
+        Rotate();
     }
 
     void OnDestroy()
@@ -52,5 +56,18 @@ public class Player : MonoBehaviour
 
         move.y = Gravity;
         _rb.velocity = move;
+    }
+
+    void Rotate()
+    {
+        Vector3 diff = transform.position - _beforePos;
+        diff.y = 0;
+
+        if (diff.magnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.LookRotation(diff);
+        }
+
+        _beforePos = transform.position;
     }
 }
