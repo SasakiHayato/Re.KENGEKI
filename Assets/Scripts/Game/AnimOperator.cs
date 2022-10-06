@@ -9,8 +9,6 @@ public class AnimOperator : MonoBehaviour, IRetentionData
 {
     [SerializeField] Animator _anim;
 
-    public string Path => nameof(AnimOperator);
-
     /// <summary>
     /// Anim.Play();
     /// </summary>
@@ -29,6 +27,9 @@ public class AnimOperator : MonoBehaviour, IRetentionData
     {
         _anim.CrossFade(stateName, duration);
     }
+
+    // ‰º‹L, IRetentionData
+    public string RetentionPath => nameof(AnimOperator);
 
     public Object RetentionData()
     {

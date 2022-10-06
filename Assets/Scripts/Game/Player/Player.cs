@@ -1,11 +1,12 @@
 using UnityEngine;
 using MonoState;
+using MonoState.Data;
 
 /// <summary>
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IRetentionData
 {
     public enum State
     {
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] AnimOperator _animOperator;
     [SerializeField] float _moveSpeed = 1;
 
+    // Note. 回転の為に使用
     Vector3 _beforePos;
 
     Rigidbody _rb;
@@ -23,10 +25,10 @@ public class Player : MonoBehaviour
 
     MonoStateMachine<Player> _stateMachine;
 
-    bool _isMove;
+    public bool IsMove { get; private set; } 
 
     readonly float Gravity = Physics.gravity.y;
-    
+
     void Awake()
     {
         _stateMachine = new MonoStateMachine<Player>();
@@ -41,9 +43,12 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _beforePos = transform.position;
 
+        // 保持データの追加
         _stateMachine
+            .SetData(this)
             .SetData(_animOperator);
 
+        //  ステートの追加
         _stateMachine
             .AddState(new Idle(), State.Idle)
             .AddState(new Move(), State.Move)
@@ -77,13 +82,13 @@ public class Player : MonoBehaviour
             move = new Vector3(dir.x, 0, dir.y) * _moveSpeed;
         }
 
-        if (move.x <= 0 && move.z <= 0)
+        if (Mathf.Abs(dir.x) <= 0 && Mathf.Abs(dir.y) <= 0)
         {
-            _isMove = false;
+            IsMove = false;
         }
         else
         {
-            _isMove = true;
+            IsMove = true;
         }
 
         move.y = Gravity;
@@ -101,5 +106,13 @@ public class Player : MonoBehaviour
         }
 
         _beforePos = transform.position;
+    }
+
+    // 下記, IRetentionData
+    public string RetentionPath => nameof(Player);
+
+    public Object RetentionData()
+    {
+        return this;
     }
 }

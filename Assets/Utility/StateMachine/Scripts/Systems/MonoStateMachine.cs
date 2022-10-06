@@ -3,11 +3,15 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace MonoState
 {
     using MonoState.State;
     using MonoState.Data;
+
+    /// <summary>
+    /// ステートマシン管理クラス
+    /// </summary>
+    /// <typeparam name="User">使用者</typeparam>
 
     public class MonoStateMachine<User> where User : MonoBehaviour
     {
@@ -20,6 +24,7 @@ namespace MonoState
 
         UserRetentionData _userRetentionData;
 
+        // 現在のステート保持クラス
         class CurrentMonoStateData
         {
             public string Path { get; private set; }
