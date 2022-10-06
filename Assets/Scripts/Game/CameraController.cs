@@ -10,8 +10,7 @@ public partial class CameraController : MonoBehaviour
 {
     [SerializeField] Transform _user;
     [SerializeField] CinemachineFreeLook _freeLookCamera;
-    [SerializeField, Range(1, 5)] float _sencivity = 1;
-
+    
     InputOperator _inputOperator;
 
     public static CameraData Data { get; private set; }
@@ -42,7 +41,7 @@ public partial class CameraController : MonoBehaviour
         if (Gamepad.current != null)
         {
             Vector2 dir = _inputOperator.Player.Look.ReadValue<Vector2>().normalized;
-            Move(dir * _sencivity);
+            Move(dir);
         }
 
         Data.SetDir(this);
