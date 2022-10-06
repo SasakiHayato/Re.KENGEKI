@@ -6,25 +6,29 @@ namespace MonoState.Data
 {
     public interface IRetentionData
     {
+        string Path { get; }
         Object RetentionData();
     }
 
     public class UserRetentionData
     {
-        Dictionary<string, IRetentionData> _dataDic = new Dictionary<string, IRetentionData>();
-
-        public void SetData(IRetentionData data)
+        public UserRetentionData(GameObject user)
         {
-            Object retentionData = data.RetentionData();
-            string key = retentionData.name;
-
-            _dataDic.Add(key, data);
+            User = user;
         }
 
-        public Data GetData<Data>(string key) where Data : Object
-        {
+        Dictionary<string, IRetentionData> _retentionDataDic = new Dictionary<string, IRetentionData>();
+        
+        public GameObject User { get; private set; }
 
-            IRetentionData retentionData = _dataDic.First(d => d.Key == key).Value;
+        public void SetRetentionData(IRetentionData data)
+        {
+            _retentionDataDic.Add(data.Path, data);
+        }
+
+        public Data GetRetentionData<Data>(string key) where Data : Object, IRetentionData
+        {
+            IRetentionData retentionData = _retentionDataDic.First(d => d.Key == key).Value;
             Object data = retentionData.RetentionData();
 
             return (Data)data;
