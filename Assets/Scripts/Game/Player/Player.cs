@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IRetentionData
     {
         Idle,
         Move,
+        Attack,
     }
 
     [SerializeField] AnimOperator _animOperator;

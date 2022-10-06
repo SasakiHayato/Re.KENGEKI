@@ -23,10 +23,12 @@ public class AnimOperator : MonoBehaviour, IRetentionData
     /// </summary>
     /// <param name="stateName">アニメーションの名前</param>
     /// <param name="duration">フェードする時間</param>
-    public void PlayRequest(string stateName, float duration = 0.2f)
+    public void PlayRequest(string stateName, float duration)
     {
         _anim.CrossFade(stateName, duration);
     }
+
+
 
     // 下記, IRetentionData
     public string RetentionPath => nameof(AnimOperator);
