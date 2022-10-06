@@ -1,4 +1,5 @@
 using UnityEngine;
+using MonoState;
 
 /// <summary>
 /// プレイヤーの管理クラス
@@ -6,6 +7,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public enum State
+    {
+        Idle,
+        Move,
+    }
+
+    [SerializeField] AnimOperator _animOperator;
     [SerializeField] float _moveSpeed = 1;
 
     Vector3 _beforePos;
@@ -13,10 +21,17 @@ public class Player : MonoBehaviour
     Rigidbody _rb;
     InputOperator _inputOperator;
 
-    readonly float Gravity = Physics.gravity.y; 
+    MonoStateMachine<Player> _stateMachine;
+
+    bool _isMove;
+
+    readonly float Gravity = Physics.gravity.y;
     
     void Awake()
     {
+        _stateMachine = new MonoStateMachine<Player>();
+        _stateMachine.Initalize(this);
+
         _inputOperator = new InputOperator();
         _inputOperator.Enable();
     }
@@ -25,6 +40,14 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _beforePos = transform.position;
+
+        _stateMachine
+            .SetData(_animOperator);
+
+        _stateMachine
+            .AddState(new Idle(), State.Idle)
+            .AddState(new Move(), State.Move)
+            .SetRunRequest(State.Idle);
     }
 
     void Update()
@@ -52,6 +75,15 @@ public class Player : MonoBehaviour
         else
         {
             move = new Vector3(dir.x, 0, dir.y) * _moveSpeed;
+        }
+
+        if (move.x <= 0 && move.z <= 0)
+        {
+            _isMove = false;
+        }
+        else
+        {
+            _isMove = true;
         }
 
         move.y = Gravity;

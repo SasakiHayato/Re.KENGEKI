@@ -1,12 +1,15 @@
 using UnityEngine;
+using MonoState.Data;
 
 /// <summary>
 /// アニメーションの制御クラス
 /// </summary>
 
-public class AnimOperator : MonoBehaviour
+public class AnimOperator : MonoBehaviour, IRetentionData
 {
     [SerializeField] Animator _anim;
+
+    public string Path => nameof(AnimOperator);
 
     /// <summary>
     /// Anim.Play();
@@ -25,5 +28,10 @@ public class AnimOperator : MonoBehaviour
     public void PlayRequest(string stateName, float duration = 0.2f)
     {
         _anim.CrossFade(stateName, duration);
+    }
+
+    public Object RetentionData()
+    {
+        return this;
     }
 }
