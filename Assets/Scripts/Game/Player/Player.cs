@@ -6,7 +6,7 @@ using MonoState.Data;
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : MonoBehaviour, IRetentionData
+public class Player : MonoBehaviour, IRetentionData, IFieldEventHandler
 {
     public enum State
     {
@@ -76,6 +76,8 @@ public class Player : MonoBehaviour, IRetentionData
 
     void Update()
     {
+        if (IsExecution) return;
+
         Move(_inputOperator.Player.Move.ReadValue<Vector2>());
         Rotate();
     }
@@ -125,4 +127,7 @@ public class Player : MonoBehaviour, IRetentionData
     {
         return this;
     }
+
+    // 下記, IFieldEventHandler
+    public bool IsExecution { private get; set; }
 }

@@ -54,9 +54,11 @@ public class FieldConnecter : MonoBehaviour
     float _eventTimer;
 
     List<ConnectData> _connectDataList;
+    List<FieldConnecterEvent> _fieldConnecterEventList;
 
     void Start()
     {
+        _fieldConnecterEventList = new List<FieldConnecterEvent>();
         // ÉfÅ[É^ÇÃìoò^
         _connectDataList = new List<ConnectData>();
         _connectDataList.Add(_connectData1);
@@ -87,13 +89,15 @@ public class FieldConnecter : MonoBehaviour
         // EventÇÃî≠çs
         FieldConnecterEvent field = obj.AddComponent<FieldConnecterEvent>();
         field.SetData(CallBack, connectData.ID);
+
+        _fieldConnecterEventList.Add(field);
     }
 
     // EventÇ™çwì«Ç≥ÇÍÇΩç€ÇÃëJà⁄èàóù
     void CallBack(int currentID, Transform target, IFieldEventHandler handler)
     {
         ConnectData data = _connectDataList.First(c => c.ID != currentID);
-
+        
         StartCoroutine(SetTransition(data.Offset, target, handler));
     }
 
@@ -101,17 +105,25 @@ public class FieldConnecter : MonoBehaviour
     {
         _eventTimer = 0;
         handler.IsExecution = true;
+        _fieldConnecterEventList.ForEach(f => f.ColliderActive(false));
 
         yield return new WaitUntil(() => Execute(endPos, target));
 
         handler.IsExecution = false;
+
+        yield return new WaitForSeconds(2f);
+
+        _fieldConnecterEventList.ForEach(f => f.ColliderActive(true));
     }
 
     bool Execute(Vector3 endPos, Transform target)
     {
         _eventTimer += Time.deltaTime * _eventData.EventSpeed;
 
-        return true;
+        Vector3 currentPos = Vector3.Slerp(target.position, endPos, _eventTimer);
+        target.position = currentPos;
+
+        return _eventData.Tolerance > Vector3.Distance(currentPos, endPos);
     }
 
     void OnDrawGizmos()
