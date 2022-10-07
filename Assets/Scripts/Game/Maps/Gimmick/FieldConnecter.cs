@@ -33,6 +33,7 @@ public class FieldConnecter : MonoBehaviour
         }
         public float Scale => _scale;
         public int ID { get; set; }
+        public string Name => _field.name;
     }
 
     [System.Serializable]
@@ -40,11 +41,9 @@ public class FieldConnecter : MonoBehaviour
     {
         [SerializeField] float _eventSpeed = 1;
         [SerializeField] float _tolerance;
-        [SerializeField] Transform _passingPoint;
-
+        
         public float EventSpeed => _eventSpeed;
         public float Tolerance => _tolerance;
-        public Transform PassingPoint => _passingPoint;
     }
 
     [SerializeField] ConnectData _connectData1;
@@ -67,10 +66,11 @@ public class FieldConnecter : MonoBehaviour
         // Event用データの作成
         for (int index = 0; index < 2; index++)
         {
-            GameObject obj = new GameObject("Connecter");
+            GameObject obj = new GameObject();
             obj.transform.SetParent(transform);
 
             ConnectData connectData = _connectDataList[index];
+            obj.name = $"Connecter : {connectData.Name}";
 
             connectData.ID = index;
             CreateConnecter(obj, connectData);
@@ -97,7 +97,6 @@ public class FieldConnecter : MonoBehaviour
     void CallBack(int currentID, Transform target, IFieldEventHandler handler)
     {
         ConnectData data = _connectDataList.First(c => c.ID != currentID);
-        
         StartCoroutine(SetTransition(data.Offset, target, handler));
     }
 

@@ -16,6 +16,7 @@ public class EnemySpawner : MonoBehaviour
         for (int index = 0; index < _enemyList.Length; index++)
         {
             GameObject obj = Instantiate(_enemyList[index]);
+            obj.transform.SetParent(transform);
 
             // ランダムポジションの生成
             float x = Random.Range(-1, 2);
