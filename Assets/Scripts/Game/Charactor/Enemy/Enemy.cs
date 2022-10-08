@@ -3,7 +3,7 @@ using BehaviourTree;
 using MonoState;
 
 [RequireComponent(typeof(BehaviourTreeUser))]
-public class Enemy : MonoBehaviour
+public class Enemy : ChatractorBase
 {
     public enum State
     {
@@ -11,16 +11,10 @@ public class Enemy : MonoBehaviour
         Move,
     }
 
-    [SerializeField] float _moveSpeed = 1;
-    [SerializeField] AnimOperator _animOperator;
-
-    Rigidbody _rb;
+    Vector3 _beforePos;
 
     MonoStateMachine<Enemy> _stateMachine;
     EnemyRetentionData _retentionData;
-
-    readonly float Gravity = Physics.gravity.y;
-    public static readonly float AnimDuration = 0.1f;
 
     void Awake()
     {
@@ -33,7 +27,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _stateMachine
-            .SetData(_animOperator)
+            .SetData(AnimOperator)
             .SetData(_retentionData);
 
         _stateMachine
@@ -41,20 +35,34 @@ public class Enemy : MonoBehaviour
             .AddState(new EnemyStateMove(), State.Move)
             .SetRunRequest(State.Idle);
 
-        _rb = GetComponent<Rigidbody>();
+        _beforePos = transform.position;
     }
 
     void Update()
     {
         Move();
+        Rotate();
     }
 
     void Move()
     {
-        Vector3 move = _retentionData.MoveDir * _moveSpeed;
+        Vector3 move = _retentionData.MoveDir * MoveSpeed;
         move.y = Gravity;
 
-        _rb.velocity = move;
+        Rigidbody.velocity = move;
+    }
+
+    void Rotate()
+    {
+        Vector3 diff = transform.position - _beforePos;
+        diff.y = 0;
+
+        if (diff.magnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.LookRotation(diff);
+        }
+
+        _beforePos = transform.position;
     }
 
     void OnDestroy()

@@ -5,7 +5,7 @@ using MonoState;
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : MonoBehaviour, IFieldEventHandler
+public class Player : ChatractorBase, IFieldEventHandler
 {
     public enum State
     {
@@ -14,20 +14,13 @@ public class Player : MonoBehaviour, IFieldEventHandler
         Dodge,
     }
 
-    [SerializeField] AnimOperator _animOperator;
-    [SerializeField] float _moveSpeed = 1;
-
     // Note. 回転の為に使用
     Vector3 _beforePos;
 
-    Rigidbody _rb;
     InputOperator _inputOperator;
 
     MonoStateMachine<Player> _stateMachine;
     PlayerRetentionData _playerData;
-
-    readonly float Gravity = Physics.gravity.y;
-    public static readonly float AnimDuration = 0.1f;
 
     void Awake()
     {
@@ -42,13 +35,12 @@ public class Player : MonoBehaviour, IFieldEventHandler
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();
         _beforePos = transform.position;
 
         // 保持データの追加
         _stateMachine
             .SetData(_playerData)
-            .SetData(_animOperator);
+            .SetData(AnimOperator);
 
         //  ステートの追加
         _stateMachine
@@ -87,15 +79,15 @@ public class Player : MonoBehaviour, IFieldEventHandler
             Vector3 forward = CameraController.Data.Foward * dir.y;
             Vector3 right = CameraController.Data.Right * dir.x;
 
-            move = (forward + right) * _moveSpeed;
+            move = (forward + right) * MoveSpeed;
         }
         else
         {
-            move = new Vector3(dir.x, 0, dir.y) * _moveSpeed;
+            move = new Vector3(dir.x, 0, dir.y) * MoveSpeed;
         }
 
         move.y = Gravity;
-        _rb.velocity = move;
+        Rigidbody.velocity = move;
     }
 
     void Rotate()
