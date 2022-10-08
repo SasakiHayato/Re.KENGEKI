@@ -1,18 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using BehaviourTree;
+using MonoState;
 
+[RequireComponent(typeof(BehaviourTreeUser))]
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum State
     {
-        
+        Idle,
+        Move,
     }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] AnimOperator _animOperator;
+
+    MonoStateMachine<Enemy> _stateMachine;
+
+    public static readonly float AnimDuration = 0.1f;
+
+    void Awake()
     {
-        
+        _stateMachine = new MonoStateMachine<Enemy>();
+        _stateMachine.Initalize(this);
+    }
+
+    void Start()
+    {
+        _stateMachine.SetData(_animOperator);
+
+        _stateMachine
+            .AddState(new EnemyStateIdle(), State.Idle)
+            .AddState(new EnemyStateMove(), State.Move)
+            .SetRunRequest(State.Idle);
     }
 }

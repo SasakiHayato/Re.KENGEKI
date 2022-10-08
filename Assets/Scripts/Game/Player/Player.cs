@@ -52,9 +52,9 @@ public class Player : MonoBehaviour, IFieldEventHandler
 
         //  ステートの追加
         _stateMachine
-            .AddState(new Idle(), State.Idle)
-            .AddState(new Move(), State.Move)
-            .AddState(new Dodge(), State.Dodge)
+            .AddState(new PlayerStateIdle(), State.Idle)
+            .AddState(new PlayerStateMove(), State.Move)
+            .AddState(new PlayerStateDodge(), State.Dodge)
             .SetRunRequest(State.Idle);
 
         // 入力データの追加

@@ -2,7 +2,7 @@ using UnityEngine;
 using MonoState.State;
 using System;
 
-public class Dodge : MonoStateBase
+public class PlayerStateDodge : MonoStateBase
 {
     PlayerRetentionData _playerRetention;
     AnimOperator _animOperator;

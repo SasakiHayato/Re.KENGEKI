@@ -2,7 +2,7 @@ using UnityEngine;
 using MonoState.State;
 using System;
 
-public class Move : MonoStateBase
+public class PlayerStateMove : MonoStateBase
 {
     PlayerRetentionData _playerRetention;
     AnimOperator _animOperator;

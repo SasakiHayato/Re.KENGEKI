@@ -2,7 +2,7 @@ using UnityEngine;
 using MonoState.State;
 using System;
 
-public class Idle : MonoStateBase
+public class PlayerStateIdle : MonoStateBase
 {
     AnimOperator _animOperator;
     PlayerRetentionData _playerRetention;
