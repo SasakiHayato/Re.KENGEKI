@@ -64,7 +64,10 @@ namespace BehaviourTree
                 userData.SetLimitConditionalData(index);
             }
 
-            return;
+            
+
+            return; // バグが出るので、返す。要修正
+
             #if UNITY_EDITOR
             string ioPath;
             BehaviourTreeIO.CreateFile(_userPath, out ioPath);
