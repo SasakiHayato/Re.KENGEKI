@@ -8,5 +8,5 @@ public interface IFieldEventHandler
     /// <summary>
     /// ƒCƒxƒ“ƒg’†‚Å‚ ‚ê‚ÎTure‚ð•Ô‚·
     /// </summary>
-    bool IsExecution { set; }
+    bool FieldEventExecution { set; }
 }

@@ -8,11 +8,6 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        Set();
-    }
-
-    void Set()
-    {
         for (int index = 0; index < _enemyList.Length; index++)
         {
             GameObject obj = Instantiate(_enemyList[index]);

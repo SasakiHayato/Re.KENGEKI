@@ -7,28 +7,30 @@ using MonoState.Data;
 
 public class AnimOperator : MonoBehaviour, IRetentionData
 {
-    [SerializeField] Animator _anim;
-
-    /// <summary>
-    /// Anim.Play();
-    /// </summary>
-    /// <param name="stateName">アニメーションの名前</param>
-    public void PlayRequest(string stateName)
+    public enum PlayType
     {
-        _anim.Play(stateName);
+        Onece,
+        Fade,
     }
+
+    [SerializeField] Animator _anim;
 
     /// <summary>
     /// Anim.CrossFade();
     /// </summary>
     /// <param name="stateName">アニメーションの名前</param>
     /// <param name="duration">フェードする時間</param>
-    public void PlayRequest(string stateName, float duration)
+    public void PlayRequest(string stateName, PlayType type = PlayType.Onece, float duration = 0)
     {
-        _anim.CrossFade(stateName, duration);
+        if (type == PlayType.Onece)
+        {
+            _anim.Play(stateName);
+        }
+        else
+        {
+            _anim.CrossFade(stateName, duration);
+        }
     }
-
-
 
     // 下記, IRetentionData
     public string RetentionPath => nameof(AnimOperator);

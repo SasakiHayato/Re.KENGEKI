@@ -2,7 +2,7 @@ using UnityEngine;
 using MonoState.State;
 using System;
 
-public class Move : MonoStateBase
+public class Dodge : MonoStateBase
 {
     PlayerRetentionData _playerRetention;
     AnimOperator _animOperator;
@@ -15,7 +15,20 @@ public class Move : MonoStateBase
 
     public override void OnEnable()
     {
-        _animOperator.PlayRequest("Run",AnimOperator.PlayType.Fade, Player.AnimDuration);
+        float x = _playerRetention.ReadInputDir.x;
+        
+        string stateName;
+
+        if (x > 0)
+        {
+            stateName = "Dodge_Right";
+        }
+        else
+        {
+            stateName = "Dodge_Left";
+        }
+
+        _animOperator.PlayRequest(stateName, AnimOperator.PlayType.Fade, Player.AnimDuration);
     }
 
     public override void Execute()
@@ -25,18 +38,14 @@ public class Move : MonoStateBase
 
     public override Enum Exit()
     {
-        if (_playerRetention.OnDodge)
+        if (true)
         {
-            return Player.State.Dodge;
-        }
-
-        if (_playerRetention.ReadOnMove)
-        {
-            return Player.State.Move;
+            _playerRetention.OnDodge = false;
+            return Player.State.Idle;
         }
         else
         {
-            return Player.State.Idle;
+            return Player.State.Dodge;
         }
     }
 }

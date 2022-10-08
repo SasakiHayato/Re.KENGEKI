@@ -5,17 +5,17 @@ using System;
 public class Idle : MonoStateBase
 {
     AnimOperator _animOperator;
-    Player _player;
+    PlayerRetentionData _playerRetention;
 
     public override void Setup()
     {
-        _player = UserRetentionData.GetData<Player>(nameof(Player));
+        _playerRetention = UserRetentionData.GetData<PlayerRetentionData>(nameof(PlayerRetentionData));
         _animOperator = UserRetentionData.GetData<AnimOperator>(nameof(AnimOperator));
     }
 
     public override void OnEnable()
     {
-        _animOperator.PlayRequest("Idle", 0.1f);
+        _animOperator.PlayRequest("Idle",AnimOperator.PlayType.Fade, Player.AnimDuration);
     }
 
     public override void Execute()
@@ -25,7 +25,12 @@ public class Idle : MonoStateBase
 
     public override Enum Exit()
     {
-        if (_player.OnMove)
+        if (_playerRetention.OnDodge)
+        {
+            return Player.State.Dodge;
+        }
+
+        if (_playerRetention.ReadOnMove)
         {
             return Player.State.Move;
         }

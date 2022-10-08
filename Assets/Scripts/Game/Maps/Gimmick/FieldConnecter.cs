@@ -103,12 +103,12 @@ public class FieldConnecter : MonoBehaviour
     IEnumerator SetTransition(Vector3 endPos, Transform target, IFieldEventHandler handler)
     {
         _eventTimer = 0;
-        handler.IsExecution = true;
+        handler.FieldEventExecution = true;
         _fieldConnecterEventList.ForEach(f => f.ColliderActive(false));
 
         yield return new WaitUntil(() => Execute(endPos, target));
 
-        handler.IsExecution = false;
+        handler.FieldEventExecution = false;
 
         yield return new WaitForSeconds(2f);
 

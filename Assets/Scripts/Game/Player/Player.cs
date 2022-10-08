@@ -1,18 +1,17 @@
 using UnityEngine;
 using MonoState;
-using MonoState.Data;
 
 /// <summary>
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : MonoBehaviour, IRetentionData, IFieldEventHandler
+public class Player : MonoBehaviour, IFieldEventHandler
 {
     public enum State
     {
         Idle,
         Move,
-        Attack,
+        Dodge,
     }
 
     [SerializeField] AnimOperator _animOperator;
@@ -25,28 +24,10 @@ public class Player : MonoBehaviour, IRetentionData, IFieldEventHandler
     InputOperator _inputOperator;
 
     MonoStateMachine<Player> _stateMachine;
-
-    /// <summary>
-    /// trueなら行動中
-    /// </summary>
-    public bool OnMove
-    {
-        get
-        {
-            Vector2 dir = _inputOperator.Player.Move.ReadValue<Vector2>();
-
-            if (Mathf.Abs(dir.x) <= 0 && Mathf.Abs(dir.y) <= 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-    }
+    PlayerRetentionData _playerData;
 
     readonly float Gravity = Physics.gravity.y;
+    public static readonly float AnimDuration = 0.1f;
 
     void Awake()
     {
@@ -59,32 +40,42 @@ public class Player : MonoBehaviour, IRetentionData, IFieldEventHandler
 
     void Start()
     {
+        _playerData = gameObject.AddComponent<PlayerRetentionData>();
+
         _rb = GetComponent<Rigidbody>();
         _beforePos = transform.position;
 
         // 保持データの追加
         _stateMachine
-            .SetData(this)
+            .SetData(_playerData)
             .SetData(_animOperator);
 
         //  ステートの追加
         _stateMachine
             .AddState(new Idle(), State.Idle)
             .AddState(new Move(), State.Move)
+            .AddState(new Dodge(), State.Dodge)
             .SetRunRequest(State.Idle);
+
+        // 入力データの追加
+        _inputOperator.Player.Dodge.performed += contextMenu => _playerData.OnDodge = true;
     }
 
     void Update()
     {
-        if (IsExecution) return;
+        if (FieldEventExecution) return;
 
-        Move(_inputOperator.Player.Move.ReadValue<Vector2>());
+        Vector2 inputDir = _inputOperator.Player.Move.ReadValue<Vector2>();
+        _playerData.SetInputDir(inputDir);
+
+        Move(inputDir);
         Rotate();
     }
 
     void OnDestroy()
     {
         _inputOperator.Disable();
+        Destroy(GetComponent<PlayerRetentionData>());
     }
 
     void Move(Vector2 dir)
@@ -120,14 +111,6 @@ public class Player : MonoBehaviour, IRetentionData, IFieldEventHandler
         _beforePos = transform.position;
     }
 
-    // 下記, IRetentionData
-    public string RetentionPath => nameof(Player);
-
-    public Object RetentionData()
-    {
-        return this;
-    }
-
     // 下記, IFieldEventHandler
-    public bool IsExecution { private get; set; }
+    public bool FieldEventExecution { private get; set; }
 }
