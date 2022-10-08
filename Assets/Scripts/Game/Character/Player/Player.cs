@@ -5,7 +5,7 @@ using MonoState;
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : ChatractorBase, IFieldEventHandler
+public class Player : ChatracterBase, IFieldEventHandler
 {
     public enum State
     {
@@ -33,7 +33,7 @@ public class Player : ChatractorBase, IFieldEventHandler
         _playerData = gameObject.AddComponent<PlayerRetentionData>();
     }
 
-    void Start()
+    protected override void Setup()
     {
         _beforePos = transform.position;
 

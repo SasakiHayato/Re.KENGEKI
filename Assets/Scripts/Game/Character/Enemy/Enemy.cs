@@ -3,13 +3,16 @@ using BehaviourTree;
 using MonoState;
 
 [RequireComponent(typeof(BehaviourTreeUser))]
-public class Enemy : ChatractorBase
+public class Enemy : ChatracterBase
 {
     public enum State
     {
         Idle,
         Move,
+        Attack,
     }
+
+    [SerializeField] BulletOperator _bulletOperator;
 
     Vector3 _beforePos;
 
@@ -24,15 +27,18 @@ public class Enemy : ChatractorBase
         _retentionData = gameObject.AddComponent<EnemyRetentionData>();
     }
 
-    void Start()
+    
+    protected override void Setup()
     {
         _stateMachine
+            .SetData(_bulletOperator)
             .SetData(AnimOperator)
             .SetData(_retentionData);
 
         _stateMachine
             .AddState(new EnemyStateIdle(), State.Idle)
             .AddState(new EnemyStateMove(), State.Move)
+            .AddState(new EnemyStateAttack(), State.Attack)
             .SetRunRequest(State.Idle);
 
         _beforePos = transform.position;

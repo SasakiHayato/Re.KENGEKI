@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class ChatractorBase : MonoBehaviour
+public abstract class ChatracterBase : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 1;
     [SerializeField] AnimOperator _animOperator;
@@ -14,7 +14,10 @@ public abstract class ChatractorBase : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        Setup();
     }
+
+    protected abstract void Setup();
 
     protected float MoveSpeed => _moveSpeed;
     protected AnimOperator AnimOperator => _animOperator;

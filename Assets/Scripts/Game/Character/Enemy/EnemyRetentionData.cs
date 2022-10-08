@@ -16,6 +16,11 @@ public class EnemyRetentionData : MonoBehaviour, IRetentionData
         }
     }
 
+    /// <summary>
+    /// UŒ‚’†‚È‚çTrue
+    /// </summary>
+    public bool OnAttack { get; set; }
+
     // ‰º‹L, IRetentionData
     public string RetentionPath => nameof(EnemyRetentionData);
 
