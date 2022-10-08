@@ -29,8 +29,8 @@ public class PlayerStateDodge : MonoStateBase
         }
 
         _animOperator
-            .AttributeWaitAnim(Player.AnimDuration)
-            .PlayRequest(stateName, AnimOperator.PlayType.Fade, Player.AnimDuration);
+            .AttributeWaitAnim(ChatracterBase.AnimDuration)
+            .PlayRequest(stateName, AnimOperator.PlayType.Fade, ChatracterBase.AnimDuration);
     }
 
     public override void Execute()

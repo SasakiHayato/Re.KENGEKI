@@ -244,7 +244,7 @@ MonoBehaviour:
     _attackPower: 0
     _delayTime: 0
     _modelList:
-    - _shotType: 0
+    - _shotType: 1
       _point: {fileID: 0}
 --- !u!114 &261802759
 MonoBehaviour:

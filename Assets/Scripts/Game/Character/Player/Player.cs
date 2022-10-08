@@ -1,11 +1,16 @@
 using UnityEngine;
 using MonoState;
 
+public interface IDodgeEvent
+{
+    void ExecuteDodgeEvent();
+}
+
 /// <summary>
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : ChatracterBase, IFieldEventHandler, IDamageble
+public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 {
     public enum State
     {
@@ -20,7 +25,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble
     InputOperator _inputOperator;
 
     MonoStateMachine<Player> _stateMachine;
-    PlayerRetentionData _playerData;
+    PlayerRetentionData _retentionData;
 
     void Awake()
     {
@@ -30,7 +35,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble
         _inputOperator = new InputOperator();
         _inputOperator.Enable();
 
-        _playerData = gameObject.AddComponent<PlayerRetentionData>();
+        _retentionData = gameObject.AddComponent<PlayerRetentionData>();
     }
 
     protected override void Setup()
@@ -39,7 +44,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble
 
         // 保持データの追加
         _stateMachine
-            .SetData(_playerData)
+            .SetData(_retentionData)
             .SetData(AnimOperator);
 
         //  ステートの追加
@@ -50,7 +55,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble
             .SetRunRequest(State.Idle);
 
         // 入力データの追加
-        _inputOperator.Player.Dodge.performed += contextMenu => _playerData.OnDodge = true;
+        _inputOperator.Player.Dodge.performed += contextMenu => _retentionData.OnDodge = true;
     }
 
     void Update()
@@ -58,7 +63,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble
         if (FieldEventExecution) return;
 
         Vector2 inputDir = _inputOperator.Player.Move.ReadValue<Vector2>();
-        _playerData.SetInputDir(inputDir);
+        _retentionData.SetInputDir(inputDir);
 
         Move(inputDir);
         Rotate();
@@ -106,7 +111,21 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble
     // 下記, IDamageble
     public void GetDamage(int damage)
     {
+        if (_retentionData.OnDodge)
+        {
+            Debug.Log("回避");
+            return;
+        }
+
         Debug.Log("ダメージ");
+    }
+
+    // 下記, IDodgeEvent
+    public void ExecuteDodgeEvent()
+    {
+        if (!_retentionData.OnDodge) return;
+
+        
     }
 
     // 下記, IFieldEventHandler

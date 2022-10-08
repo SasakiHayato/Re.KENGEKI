@@ -90,11 +90,17 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
     private void OnTriggerEnter(Collider other)
     {
         IDamageble damageble = other.GetComponent<IDamageble>();
-        
+        IDodgeEvent dodgeEvent = other.GetComponent<IDodgeEvent>();
+
         if (damageble != null)
         {
             damageble.GetDamage(_attackPower);
             IsDone = true;
+        }
+
+        if (dodgeEvent != null)
+        {
+            dodgeEvent.ExecuteDodgeEvent();
         }
     }
 }
