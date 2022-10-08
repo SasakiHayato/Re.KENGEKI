@@ -36,12 +36,12 @@ public class Player : MonoBehaviour, IFieldEventHandler
 
         _inputOperator = new InputOperator();
         _inputOperator.Enable();
+
+        _playerData = gameObject.AddComponent<PlayerRetentionData>();
     }
 
     void Start()
     {
-        _playerData = gameObject.AddComponent<PlayerRetentionData>();
-
         _rb = GetComponent<Rigidbody>();
         _beforePos = transform.position;
 

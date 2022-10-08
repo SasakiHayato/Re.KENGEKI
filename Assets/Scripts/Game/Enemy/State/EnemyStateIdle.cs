@@ -6,11 +6,13 @@ using System;
 
 public class EnemyStateIdle : MonoStateBase
 {
+    EnemyRetentionData _retentionData;
     AnimOperator _animOperator;
 
     public override void Setup()
     {
         _animOperator = UserRetentionData.GetData<AnimOperator>(nameof(AnimOperator));
+        _retentionData = UserRetentionData.GetData<EnemyRetentionData>(nameof(EnemyRetentionData));
     }
 
     public override void OnEnable()
@@ -25,6 +27,13 @@ public class EnemyStateIdle : MonoStateBase
 
     public override Enum Exit()
     {
-        return Enemy.State.Idle;
+        if (_retentionData.MoveDir != Vector3.zero)
+        {
+            return Enemy.State.Move;
+        }
+        else
+        {
+            return Enemy.State.Idle;
+        }
     }
 }
