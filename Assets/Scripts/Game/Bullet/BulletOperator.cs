@@ -9,7 +9,7 @@ public class BulletOperator : MonoBehaviour, IRetentionData
     public struct SendData
     {
         public float MoveSpeed;
-        public float AttackPower;
+        public int AttackPower;
         public BulletData.Model Model;
     }
 
@@ -49,8 +49,6 @@ public class BulletOperator : MonoBehaviour, IRetentionData
     {
         for (int index = 0; index < _bulletData.ModelList.Count; index++)
         {
-            Debug.Log("aaa");
-
             Action action;
             Bullet bullet = _bulletPool.UseRequest(out action);
 

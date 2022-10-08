@@ -1,5 +1,10 @@
 using UnityEngine;
 
+public interface IDamageble
+{
+    void GetDamage(int damage);
+}
+
 [RequireComponent(typeof(Rigidbody))]
 public abstract class ChatracterBase : MonoBehaviour
 {

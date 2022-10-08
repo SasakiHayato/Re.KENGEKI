@@ -6,8 +6,8 @@ public class BulletData
 {
     public enum ShotType
     {
-        Homing,
         ToPlayer,
+        Homing,
     }
 
     [System.Serializable]

@@ -4,7 +4,7 @@ using ObjectPool;
 public class Bullet : MonoBehaviour, IPool, IPoolEvent
 {
     float _moveSpeed;
-    float _attackPower;
+    int _attackPower;
     float _activeTimer;
 
     Vector3 _dir;
@@ -61,7 +61,6 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
     public bool Execute()
     {
         _activeTimer += Time.deltaTime;
-
         _rb.velocity = _dir * _moveSpeed;
 
         return _activeTimer > BulletOperator.BulletActiveTime;
@@ -74,6 +73,12 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
 
     private void OnTriggerEnter(Collider other)
     {
-        IsDone = true;
+        IDamageble damageble = other.GetComponent<IDamageble>();
+        
+        if (damageble != null)
+        {
+            damageble.GetDamage(_attackPower);
+            IsDone = true;
+        }
     }
 }
