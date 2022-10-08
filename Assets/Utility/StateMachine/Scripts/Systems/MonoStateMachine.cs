@@ -41,6 +41,10 @@ namespace MonoState
             }
         }
         
+        /// <summary>
+        /// 初期化
+        /// </summary>
+        /// <param name="user"></param>
         public void Initalize(User user)
         {
             _user = user;
@@ -53,6 +57,12 @@ namespace MonoState
             _userRetentionData = new UserRetentionData(user.gameObject);
         }
 
+        /// <summary>
+        /// ステートの追加
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public MonoStateMachine<User> AddState(MonoStateBase state, Enum path)
         {
             _stateDic.Add(path.ToString(), state);
@@ -60,6 +70,11 @@ namespace MonoState
             return this;
         }
 
+        /// <summary>
+        /// 保持データの保存
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public MonoStateMachine<User> SetData(IRetentionData data)
         {
             _userRetentionData.SetRetentionData(data);
@@ -67,6 +82,10 @@ namespace MonoState
             return this;
         }
 
+        /// <summary>
+        /// ステートを回す申請
+        /// </summary>
+        /// <param name="path"></param>
         public void SetRunRequest(Enum path)
         {
             MonoStateBase monoState = _stateDic.First(d => d.Key == path.ToString()).Value;
@@ -93,6 +112,7 @@ namespace MonoState
                 return;
             }
 
+            // 次ステートの取得
             string path = _currentMonoState.MonoState.Exit().ToString();
 
             if (_currentMonoState.Path == path)
@@ -102,16 +122,21 @@ namespace MonoState
             else
             {
                 ChangeState(path);
-                _currentMonoState.MonoState.OnEnable();
             }
         }
 
+        /// <summary>
+        /// ステートの変更
+        /// </summary>
+        /// <param name="path"></param>
         public void ChangeState(string path)
         {
             MonoStateBase monoState = _stateDic.First(d => d.Key == path).Value;
 
             _currentMonoState.SetMonoState(monoState);
             _currentMonoState.SetPath(path);
+
+            _currentMonoState.MonoState.OnEnable();
         }
     }
 }
