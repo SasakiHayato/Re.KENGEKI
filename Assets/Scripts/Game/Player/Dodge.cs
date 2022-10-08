@@ -28,7 +28,9 @@ public class Dodge : MonoStateBase
             stateName = "Dodge_Left";
         }
 
-        _animOperator.PlayRequest(stateName, AnimOperator.PlayType.Fade, Player.AnimDuration);
+        _animOperator
+            .AttributeWaitAnim(Player.AnimDuration)
+            .PlayRequest(stateName, AnimOperator.PlayType.Fade, Player.AnimDuration);
     }
 
     public override void Execute()
@@ -38,7 +40,7 @@ public class Dodge : MonoStateBase
 
     public override Enum Exit()
     {
-        if (true)
+        if (_animOperator.IsEndCurrentAnim)
         {
             _playerRetention.OnDodge = false;
             return Player.State.Idle;
