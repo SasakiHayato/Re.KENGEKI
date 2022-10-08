@@ -30,10 +30,6 @@ namespace BehaviourTree
 
         public int UserID { get; private set; }
 
-        #if UNITY_EDITOR
-        public List<TreeDataBase> TreeDataBaseList => _treeDataList;
-        #endif
-
         void Start()
         {
             SetUserData();
@@ -68,6 +64,7 @@ namespace BehaviourTree
                 userData.SetLimitConditionalData(index);
             }
 
+            return;
             #if UNITY_EDITOR
             string ioPath;
             BehaviourTreeIO.CreateFile(_userPath, out ioPath);

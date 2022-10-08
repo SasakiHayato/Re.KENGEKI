@@ -11,7 +11,7 @@ namespace BehaviourTree.IO
 
     public class BehaviourTreeJsonMeditor
     {
-        const string JsonPath = "Assets/BehaviourTree/Json/UserPath.json";
+        const string JsonPath = "Assets/Utility/BehaviourTree/Json/UserPath.json";
 
         public IOPathModel Read()
         {
