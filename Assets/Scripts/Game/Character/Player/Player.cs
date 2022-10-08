@@ -5,7 +5,7 @@ using MonoState;
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : ChatracterBase, IFieldEventHandler
+public class Player : ChatracterBase, IFieldEventHandler, IDamageble
 {
     public enum State
     {
@@ -101,6 +101,12 @@ public class Player : ChatracterBase, IFieldEventHandler
         }
 
         _beforePos = transform.position;
+    }
+
+    // 下記, IDamageble
+    public void GetDamage(int damage)
+    {
+        Debug.Log("ダメージ");
     }
 
     // 下記, IFieldEventHandler

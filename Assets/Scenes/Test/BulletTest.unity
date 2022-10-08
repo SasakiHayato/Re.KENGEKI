@@ -389,6 +389,7 @@ GameObject:
   - component: {fileID: 719172620}
   - component: {fileID: 719172619}
   - component: {fileID: 719172618}
+  - component: {fileID: 719172623}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Untagged
@@ -488,6 +489,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &719172623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719172617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10584023ae822e44abe365828d5c2edd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &850259861
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,14 +631,10 @@ MonoBehaviour:
   _bullet: {fileID: 6464627562245998369, guid: a0dfb740f2ff6de4da9db1266a1fd36b, type: 3}
   _createCount: 5
   _bulletData:
-    _moveSpeed: 1
-    _attackPower: 0
+    _moveSpeed: 7
+    _attackPower: 1
     _delayTime: 0.5
     _modelList:
-    - _shotType: 1
-      _point: {fileID: 0}
-    - _shotType: 1
-      _point: {fileID: 0}
     - _shotType: 1
       _point: {fileID: 0}
     - _shotType: 1
@@ -857,6 +866,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01684964d31a82a4fbdb40a76fb0d0db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _intervalTime: 999999
   _bulletOperator: {fileID: 867124966}
 --- !u!1 &1529517753
 GameObject:

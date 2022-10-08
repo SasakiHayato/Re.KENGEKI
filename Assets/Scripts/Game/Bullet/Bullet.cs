@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
     float _moveSpeed;
     int _attackPower;
     float _activeTimer;
+    bool _isHoming;
 
     Vector3 _dir;
 
@@ -29,6 +30,11 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
         _attackPower = sendData.AttackPower;
         _model = sendData.Model;
         _muzzle = muzzle;
+
+        if (sendData.Model.ShotType == BulletData.ShotType.Homing)
+        {
+            _isHoming = true;
+        }
     }
 
     public void OnEnableEvent()
@@ -36,23 +42,27 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
         gameObject.SetActive(true);
         gameObject.transform.SetParent(null);
 
+        Vector3 muzzle;
+
+        if (_model.Point == null)
+        {
+            muzzle = Vector3.zero;
+        }
+        else
+        {
+            muzzle = _model.Point.position;
+        }
+
+        Vector3 offset = _muzzle.position + muzzle;
+
         if (_model.ShotType == BulletData.ShotType.ToPlayer)
         {
-            Vector3 muzzle;
-
-            if (_model.Point == null)
-            {
-                muzzle = _muzzle.position;
-            }
-            else
-            {
-                muzzle = _model.Point.position;
-            }
-
-            Vector3 offset = _muzzle.position + muzzle;
             gameObject.transform.position = offset;
-
             _dir = GameManager.Instance.GameUser.position - offset;
+        }
+        else
+        {
+            gameObject.transform.position = offset;
         }
 
         _activeTimer = 0;
@@ -61,7 +71,13 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
     public bool Execute()
     {
         _activeTimer += Time.deltaTime;
-        _rb.velocity = _dir * _moveSpeed;
+
+        if (_isHoming)
+        {
+            _dir = GameManager.Instance.GameUser.position - transform.position;
+        }
+
+        _rb.velocity = _dir.normalized * _moveSpeed;
 
         return _activeTimer > BulletOperator.BulletActiveTime;
     }
