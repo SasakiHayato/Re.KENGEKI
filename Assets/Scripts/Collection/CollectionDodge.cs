@@ -19,11 +19,6 @@ public class CollectionDodge : MonoBehaviour
     {
         _obj = new GameObject("CollectDodge");
 
-        if (_obj.GetComponent<Collider>() == null)
-        {
-            _obj.AddComponent<Collider>();
-        }
-
         _collider = null;
 
         switch (_type)

@@ -3,6 +3,7 @@ using MonoState;
 
 public interface IDodgeEvent
 {
+    bool ExecutionDodgeEvent { get; }
     void ExecuteDodgeEvent();
 }
 
@@ -62,10 +63,13 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
     {
         if (FieldEventExecution) return;
 
-        Vector2 inputDir = _inputOperator.Player.Move.ReadValue<Vector2>();
-        _retentionData.SetInputDir(inputDir);
+        if (!_retentionData.OnDodge)
+        {
+            Vector2 inputDir = _inputOperator.Player.Move.ReadValue<Vector2>();
+            _retentionData.SetInputDir(inputDir);
+        }
 
-        Move(inputDir);
+        Move();
         Rotate();
     }
 
@@ -75,8 +79,9 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
         Destroy(GetComponent<PlayerRetentionData>());
     }
 
-    void Move(Vector2 dir)
+    void Move()
     {
+        Vector2 dir = _retentionData.ReadInputDir;
         Vector3 move;
 
         if (CameraController.Data != null)
@@ -92,6 +97,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
         }
 
         move.y = Gravity;
+
         Rigidbody.velocity = move;
     }
 
@@ -113,7 +119,6 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
     {
         if (_retentionData.OnDodge)
         {
-            Debug.Log("‰ñ”ð");
             return;
         }
 
@@ -123,10 +128,12 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
     // ‰º‹L, IDodgeEvent
     public void ExecuteDodgeEvent()
     {
-        if (!_retentionData.OnDodge) return;
+        if (!_retentionData.OnDodge || ExecutionDodgeEvent) return;
 
-        
+        ExecutionDodgeEvent = true;
     }
+
+    public bool ExecutionDodgeEvent { get; private set; }
 
     // ‰º‹L, IFieldEventHandler
     public bool FieldEventExecution { private get; set; }

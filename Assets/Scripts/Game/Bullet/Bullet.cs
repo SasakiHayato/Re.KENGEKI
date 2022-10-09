@@ -98,7 +98,7 @@ public class Bullet : MonoBehaviour, IPool, IPoolEvent
             IsDone = true;
         }
 
-        if (dodgeEvent != null)
+        if (dodgeEvent != null && !dodgeEvent.ExecutionDodgeEvent)
         {
             dodgeEvent.ExecuteDodgeEvent();
         }

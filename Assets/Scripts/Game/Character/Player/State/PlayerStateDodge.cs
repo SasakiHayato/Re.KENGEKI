@@ -4,6 +4,8 @@ using System;
 
 public class PlayerStateDodge : MonoStateBase
 {
+    Vector2 _inputDir;
+
     PlayerRetentionData _playerRetention;
     AnimOperator _animOperator;
 
@@ -15,11 +17,19 @@ public class PlayerStateDodge : MonoStateBase
 
     public override void OnEnable()
     {
-        float x = _playerRetention.ReadInputDir.x;
+        if (_playerRetention.ReadInputDir == Vector2.zero)
+        {
+            Vector3 back = UserRetentionData.User.transform.forward * -1;
+            _inputDir = new Vector2(back.x, back.z);
+        }
+        else
+        {
+            _inputDir = _playerRetention.ReadInputDir;
+        }
         
         string stateName;
 
-        if (x > 0)
+        if (_inputDir.x > 0)
         {
             stateName = "Dodge_Right";
         }
@@ -35,7 +45,7 @@ public class PlayerStateDodge : MonoStateBase
 
     public override void Execute()
     {
-        
+        _playerRetention.SetInputDir(_inputDir);
     }
 
     public override Enum Exit()

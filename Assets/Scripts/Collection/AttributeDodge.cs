@@ -17,11 +17,11 @@ public class AttributeDodge : MonoBehaviour
         transform.position = _parent.transform.position;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         IDodgeEvent dodgeEvent = other.GetComponent<IDodgeEvent>();
 
-        if (dodgeEvent != null)
+        if (dodgeEvent != null && !dodgeEvent.ExecutionDodgeEvent)
         {
             dodgeEvent.ExecuteDodgeEvent();
         }
