@@ -3,7 +3,7 @@ using BehaviourTree;
 using MonoState;
 
 [RequireComponent(typeof(BehaviourTreeUser))]
-public class Enemy : ChatracterBase
+public class Enemy : ChatracterBase, IDamageble
 {
     public enum State
     {
@@ -12,6 +12,7 @@ public class Enemy : ChatracterBase
         Attack,
     }
 
+    [SerializeField] int _hp;
     [SerializeField] BulletOperator _bulletOperator;
 
     Vector3 _beforePos;
@@ -32,7 +33,7 @@ public class Enemy : ChatracterBase
     {
         _stateMachine
             .SetData(_bulletOperator)
-            .SetData(AnimOperator)
+            .SetData(Anim)
             .SetData(_retentionData);
 
         _stateMachine
@@ -74,5 +75,18 @@ public class Enemy : ChatracterBase
     void OnDestroy()
     {
         Destroy(GetComponent<EnemyRetentionData>());
+    }
+
+    // ‰º‹L, IDamageble
+    public void GetDamage(int damage)
+    {
+        _hp -= damage;
+
+        if (_hp <= 0)
+        {
+            Anim
+                .AttaributeCallBack(() => Destroy(gameObject))
+                .PlayRequest("Dead", AnimOperator.PlayType.Fade, AnimDuration);
+        }
     }
 }

@@ -46,7 +46,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
         // 保持データの追加
         _stateMachine
             .SetData(_retentionData)
-            .SetData(AnimOperator);
+            .SetData(Anim);
 
         //  ステートの追加
         _stateMachine

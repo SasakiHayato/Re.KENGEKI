@@ -40,7 +40,7 @@ public class PlayerStateDodge : MonoStateBase
         }
 
         _animOperator
-            .AttributeWaitAnim(ChatracterBase.AnimDuration)
+            .AttributeWaitAnim()
             .PlayRequest(stateName, AnimOperator.PlayType.Fade, ChatracterBase.AnimDuration);
     }
 

@@ -25,5 +25,5 @@ public abstract class ChatracterBase : MonoBehaviour
     protected abstract void Setup();
 
     protected float MoveSpeed => _moveSpeed;
-    protected AnimOperator AnimOperator => _animOperator;
+    protected AnimOperator Anim => _animOperator;
 }
