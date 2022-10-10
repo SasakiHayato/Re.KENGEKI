@@ -11,7 +11,7 @@ public class CollectionDodge : MonoBehaviour
 
     [SerializeField] ColliderType _type;
     [SerializeField] float _scale = 1;
-
+    
     GameObject _obj;
     Collider _collider;
 

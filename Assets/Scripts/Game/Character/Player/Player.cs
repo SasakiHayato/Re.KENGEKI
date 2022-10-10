@@ -122,7 +122,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
             return;
         }
 
-        Debug.Log("ダメージ");
+        EffectOperator.Event.SetData(new TestEffect());
     }
 
     // 下記, IDodgeEvent
@@ -131,6 +131,8 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
         if (!_retentionData.OnDodge || ExecutionDodgeEvent) return;
 
         ExecutionDodgeEvent = true;
+
+
     }
 
     public bool ExecutionDodgeEvent { get; private set; }

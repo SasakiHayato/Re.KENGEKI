@@ -17,6 +17,7 @@ public class PlayerStateDodge : MonoStateBase
 
     public override void OnEnable()
     {
+        // “ü—Í‚ª‚È‚¯‚ê‚ÎPlayer‚ÌŒã‚ë•ûŒü‚ð‘ã“ü
         if (_playerRetention.ReadInputDir == Vector2.zero)
         {
             Vector3 back = UserRetentionData.User.transform.forward * -1;
