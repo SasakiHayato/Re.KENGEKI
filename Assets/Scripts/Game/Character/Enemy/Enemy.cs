@@ -84,6 +84,7 @@ public class Enemy : ChatracterBase, IDamageble
 
         if (_hp <= 0)
         {
+            Anim.SetRootMotion(true);
             Anim
                 .AttaributeCallBack(() => Destroy(gameObject))
                 .PlayRequest("Dead", AnimOperator.PlayType.Fade, AnimDuration);

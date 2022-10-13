@@ -4,44 +4,31 @@ using System.Collections;
 public interface IEffectEvent
 {
     string Path { get; }
+    object[] SendValues { set; }
     Transform User { set; }
-    void Setup();
+    void OnEnable();
     bool Execute();
     void Initalize();
 }
 
-public class EffectOperator : MonoBehaviour
+public class EffectOperator : MonoBehaviour, IManager
 {
-    public struct Event
-    { 
-        public static void SetData(IEffectEvent effectEvent, Transform user = null)
-        {
-            if (Instance == null)
-            {
-                Debug.Log("EffectOperator‚ÌInstance‚ª‚ ‚è‚Ü‚¹‚ñ");
-                return;
-            }
-
-            Instance.SetEffectEvent(effectEvent, user);
-        }
-    }
-
-    static EffectOperator Instance;
-
-    public static string ParticlePath => "Assets/Resoruce/Effects/";
+    public static string ParticlePath => "Assets/Resource/Effects/";
 
     void Awake()
     {
-        Instance = this;
+        GameManager.Instance.AddManager(this);
     }
 
-    protected void SetEffectEvent(IEffectEvent effectEvent, Transform user = null)
+    public void Request(EffectEventData eventData)
     {
+        IEffectEvent effectEvent = eventData.EffectEvent;
+        effectEvent.SendValues = eventData.Values;
+        effectEvent.User = eventData.User;
+
         try
         {
-            effectEvent.User = user;
-            StartCoroutine(Execute(effectEvent));
-            
+            StartCoroutine(Execute(effectEvent, eventData.CallBack));
         }
         catch
         {
@@ -49,9 +36,9 @@ public class EffectOperator : MonoBehaviour
         }
     }
 
-    IEnumerator Execute(IEffectEvent effectEvent)
+    IEnumerator Execute(IEffectEvent effectEvent, System.Action action)
     {
-        effectEvent.Setup();
+        effectEvent.OnEnable();
 
         while (!effectEvent.Execute())
         {
@@ -59,5 +46,13 @@ public class EffectOperator : MonoBehaviour
         }
 
         effectEvent.Initalize();
+        action?.Invoke();
+    }
+
+    // IManager
+    public string Key => nameof(EffectOperator);
+    public Object Type()
+    {
+        return this;
     }
 }

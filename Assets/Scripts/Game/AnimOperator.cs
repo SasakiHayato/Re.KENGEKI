@@ -68,10 +68,15 @@ public class AnimOperator : MonoBehaviour, IRetentionData
 
     public AnimOperator AttaributeCallBack(Action action)
     {
-        _action = action;
+        _action += action;
         _attributeCallBack = true;
 
         return this;
+    }
+
+    public void SetRootMotion(bool apply)
+    {
+        _anim.applyRootMotion = apply;
     }
 
     async UniTask EndAnim(float duration)

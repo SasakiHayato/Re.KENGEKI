@@ -121,8 +121,6 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
         {
             return;
         }
-
-        EffectOperator.Event.SetData(new TestEffect());
     }
 
     // 下記, IDodgeEvent
@@ -132,7 +130,14 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
 
         ExecutionDodgeEvent = true;
 
+        // エフェクトイベントの登録
+        EffectEventData eventData = new EffectEventData();
+        eventData.EffectEvent = new SlowTimeEffect();
+        eventData.Values = new object[] { 0.5f, 0.5f };
+        eventData.CallBack = () => { ExecutionDodgeEvent = false; };
 
+        EffectOperator effectOperator = GameManager.Instance.GetManager<EffectOperator>(nameof(EffectOperator));
+        effectOperator.Request(eventData);
     }
 
     public bool ExecutionDodgeEvent { get; private set; }

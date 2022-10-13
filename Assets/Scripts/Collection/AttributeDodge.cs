@@ -21,7 +21,7 @@ public class AttributeDodge : MonoBehaviour
     {
         IDodgeEvent dodgeEvent = other.GetComponent<IDodgeEvent>();
 
-        if (dodgeEvent != null && !dodgeEvent.ExecutionDodgeEvent)
+        if (dodgeEvent != null)
         {
             dodgeEvent.ExecuteDodgeEvent();
         }
