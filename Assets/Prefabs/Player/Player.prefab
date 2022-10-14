@@ -46,10 +46,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weapon: {fileID: 6294866763026134316}
   _infomationList:
-  - _stateName: Attack1
-    _isActiveFrame: 24
-    _endActiveFreme: 40
-    _attributeNextFeme: 50
+  - _isActiveFrame: 9
+    _endActiveFreme: 17
+    _attributeNextFeme: 21
+  - _isActiveFrame: 4
+    _endActiveFreme: 10
+    _attributeNextFeme: 20
+  - _isActiveFrame: 21
+    _endActiveFreme: 35
+    _attributeNextFeme: 60
 --- !u!1 &6165765639018505183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2590,7 +2595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4503961772854434, guid: a20a162ac11a35643bed0f3823718abb, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4503961772854434, guid: a20a162ac11a35643bed0f3823718abb, type: 3}
       propertyPath: m_LocalPosition.x
