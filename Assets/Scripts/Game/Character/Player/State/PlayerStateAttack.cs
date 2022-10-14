@@ -11,6 +11,9 @@ public class PlayerStateAttack : MonoStateBase
     AnimOperator _animOperator;
     AttackController _attackController;
 
+    int _stateIndex;
+    string[] _stateNameArray = new string[] {"Attack1", "Attack2" ,"Attack3" };
+
     public override void Setup()
     {
         _retentionData = UserRetentionData.GetData<PlayerRetentionData>(nameof(PlayerRetentionData));
@@ -20,10 +23,19 @@ public class PlayerStateAttack : MonoStateBase
 
     public override void OnEnable()
     {
-        _attackController.Request();
+        if (_stateIndex >= _stateNameArray.Length)
+        {
+            _stateIndex = 0;
+        }
+
+        string stateName = _stateNameArray[_stateIndex];
+
+        int frameCount = _animOperator.GetAnimFrameCount(stateName);
+        _attackController.Request(frameCount);
+
         _animOperator
             .AttributeWaitAnim()
-            .PlayRequest(_attackController.CurrentStateName, AnimOperator.PlayType.Fade, CharacterBase.AnimDuration);
+            .PlayRequest(stateName, AnimOperator.PlayType.Fade, CharacterBase.AnimDuration);
     }
 
     public override void Execute()
@@ -35,6 +47,7 @@ public class PlayerStateAttack : MonoStateBase
     {
         if (_attackController.OnNext)
         {
+            _stateIndex++;
             OnEnable();
             return Player.State.Attack;
         }

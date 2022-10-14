@@ -10,11 +10,9 @@ public class AttackController : MonoBehaviour, IRetentionData
 
     int _infoIndex;
 
-    public string CurrentStateName { get; private set; }
-
     public bool OnNext { get; private set; }
 
-    public void Request()
+    public void Request(int frameCount = 0)
     {
         if (_infoIndex >= _infomationList.Count)
         {
@@ -22,11 +20,10 @@ public class AttackController : MonoBehaviour, IRetentionData
         }
 
         AttackInfomation info = _infomationList[_infoIndex];
-        CurrentStateName = info.StateName;
         _weapon.Active(true);
 
         OnNext = false;
-        OnProcess(info).Forget();
+        OnProcess(info, frameCount).Forget();
     }
 
     public void Cancel()
@@ -38,27 +35,28 @@ public class AttackController : MonoBehaviour, IRetentionData
         OnNext = false;
     }
 
-    async UniTask OnProcess(AttackInfomation infomation)
+    async UniTask OnProcess(AttackInfomation infomation, int frameCount)
     {
-        int frame = 0;
+        float timer = 0;
 
-        await UniTask.WaitUntil(() => Check(ref frame, infomation.IsActiveFrame));
+        await UniTask.WaitUntil(() => Check(ref timer, frameCount, infomation.IsActiveFrame));
         _weapon.ColliderEnable(true);
-
-        await UniTask.WaitUntil(() => Check(ref frame, infomation.EndActiveFreme));
+        
+        await UniTask.WaitUntil(() => Check(ref timer, frameCount, infomation.EndActiveFreme));
         _weapon.ColliderEnable(false);
-
-        await UniTask.WaitUntil(() => Check(ref frame, infomation.AttributeNextFreme));
+        
+        await UniTask.WaitUntil(() => Check(ref timer, frameCount, infomation.AttributeNextFreme));
         _infoIndex++;
-
+        
         OnNext = true;
     }
 
-    bool Check(ref int frame, int checkFrame)
+    bool Check(ref float timer, int frameCount, int check)
     {
-        frame++;
-        //Debug.Log(frame);
-        return frame >= checkFrame;
+        timer += Time.deltaTime;
+
+        int count = (int)Mathf.Lerp(0, frameCount, timer);
+        return count > check;
     }
 
     // ‰º‹L, IRetentionData
