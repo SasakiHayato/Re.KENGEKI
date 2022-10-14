@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 
 public partial class CameraController : MonoBehaviour
 {
+    [SerializeField] bool _isDebug;
     [SerializeField] Transform _user;
     [SerializeField] CinemachineFreeLook _freeLookCamera;
     
@@ -30,11 +31,10 @@ public partial class CameraController : MonoBehaviour
 
     void Start()
     {
-        // 使用者の設定
-        _freeLookCamera.Follow = _user;
-        _freeLookCamera.LookAt = _user;
-
-        _freeLookCamera.transform.SetParent(transform);
+        if (_isDebug)
+        {
+            SetUser(_user);
+        }
     }
 
     void Update()
@@ -53,6 +53,15 @@ public partial class CameraController : MonoBehaviour
     {
         Destroy(gameObject.GetComponent<CinemachineBrain>());
         Data = null;
+    }
+
+    // 使用者の設定
+    public void SetUser(Transform user)
+    {
+        _freeLookCamera.Follow = user;
+        _freeLookCamera.LookAt = user;
+
+        _freeLookCamera.transform.SetParent(transform);
     }
 
     /// <summary>
