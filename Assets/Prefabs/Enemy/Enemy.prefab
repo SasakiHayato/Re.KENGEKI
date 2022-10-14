@@ -2512,6 +2512,11 @@ MonoBehaviour:
   _mozzle: {fileID: 8740870865802343207}
   _bullet: {fileID: 6464627562245998369, guid: a0dfb740f2ff6de4da9db1266a1fd36b, type: 3}
   _createCount: 5
+  _bulletData:
+    _moveSpeed: 0
+    _attackPower: 0
+    _delayTime: 0
+    _modelList: []
 --- !u!1 &4303276027766377035
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,8 +2648,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb91b48a18834474d83bbccf0d23b723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 10
+  _moveSpeed: 8.5
   _animOperator: {fileID: 978004343274122587}
+  _hp: 0
   _bulletOperator: {fileID: 6568261511557768684}
 --- !u!114 &4303276027766377033
 MonoBehaviour:
@@ -2667,6 +2673,21 @@ MonoBehaviour:
     _mastarCodition:
       _conditionType: 0
       _couditionList: []
+    _treeData:
+      _treeType: 0
+      _executeList:
+      - _treeExecuteType: 0
+        _condition:
+          _conditionType: 0
+          _couditionList: []
+        _action:
+          _actionList:
+          - rid: 87024472840470530
+  - _name: Move
+    _mastarCodition:
+      _conditionType: 0
+      _couditionList:
+      - rid: 87024472840470529
     _treeData:
       _treeType: 0
       _executeList:
@@ -2704,4 +2725,11 @@ MonoBehaviour:
         _trueType: 0
         _attributeDistance: 5
     - rid: 87024332900401157
+      type: {class: ActionIdle, ns: , asm: Assembly-CSharp}
+    - rid: 87024472840470529
+      type: {class: ConditionPlayerDistance, ns: , asm: Assembly-CSharp}
+      data:
+        _trueType: 0
+        _attributeDistance: 10
+    - rid: 87024472840470530
       type: {class: ActionIdle, ns: , asm: Assembly-CSharp}
