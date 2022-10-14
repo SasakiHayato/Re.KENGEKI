@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class GameUserSawner : MonoBehaviour
+public class GameUserSpawner : MonoBehaviour
 {
     [SerializeField] Transform _point;
     [SerializeField] GameObject _user;
+    [SerializeField] CameraController _cameraController;
 
     void Start()
     {
@@ -11,5 +12,6 @@ public class GameUserSawner : MonoBehaviour
         user.position = _point.position;
 
         GameManager.Instance.GameUser = user;
+        _cameraController.SetUser(user);
     }
 }
