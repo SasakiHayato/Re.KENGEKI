@@ -31,6 +31,8 @@ public class PlayerRetentionData : MonoBehaviour, IRetentionData
 
     public bool OnAttack { get; set; }
 
+    public bool OnNextAttack { get; set; }
+
     public Vector2 ReadInputDir { get; private set; }
 
     public void SetInputDir(Vector2 dir)

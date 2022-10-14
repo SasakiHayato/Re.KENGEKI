@@ -62,7 +62,7 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
         // 入力データの追加
         _inputOperator.Player.Dodge.performed += contextMenu => _retentionData.OnDodge = true;
-        _inputOperator.Player.Attack.performed += contextMenu => _retentionData.OnAttack = true;
+        _inputOperator.Player.Attack.performed += contextMenu => OnAttack();
     }
 
     void Update()
@@ -118,6 +118,20 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         }
 
         _beforePos = transform.position;
+    }
+
+    void OnAttack()
+    {
+        if (_retentionData.OnAttack && _attackController.OnNext)
+        {
+            _retentionData.OnNextAttack = true;
+        }
+        else
+        {
+            _retentionData.OnNextAttack = false;
+            _retentionData.OnAttack = true;
+        }
+        
     }
 
     // 下記, IDamageble

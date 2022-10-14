@@ -45,8 +45,15 @@ public class PlayerStateAttack : MonoStateBase
 
     public override Enum Exit()
     {
-        if (_attackController.OnNext)
+        if (_retentionData.OnDodge)
         {
+            Initalize();
+            return Player.State.Dodge;
+        }
+
+        if (_attackController.OnNext && _retentionData.OnNextAttack)
+        {
+            _retentionData.OnNextAttack = false;
             _stateIndex++;
             OnEnable();
             return Player.State.Attack;
@@ -54,14 +61,20 @@ public class PlayerStateAttack : MonoStateBase
 
         if (_animOperator.IsEndCurrentAnim)
         {
-            _retentionData.OnAttack = false;
-            _attackController.Cancel();
-
+            Initalize();
             return Player.State.Idle;
         }
         else
         {
             return Player.State.Attack;
         }
+    }
+
+    void Initalize()
+    {
+        _retentionData.OnAttack = false;
+        _retentionData.OnNextAttack = false;
+        _attackController.Cancel();
+        _stateIndex = 0;
     }
 }

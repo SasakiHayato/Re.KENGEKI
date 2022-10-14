@@ -48,10 +48,10 @@ MonoBehaviour:
   _infomationList:
   - _isActiveFrame: 9
     _endActiveFreme: 17
-    _attributeNextFeme: 21
+    _attributeNextFeme: 30
   - _isActiveFrame: 4
     _endActiveFreme: 10
-    _attributeNextFeme: 20
+    _attributeNextFeme: 25
   - _isActiveFrame: 21
     _endActiveFreme: 35
     _attributeNextFeme: 60
