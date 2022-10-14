@@ -6,7 +6,7 @@ public interface IDamageble
 }
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class ChatracterBase : MonoBehaviour
+public abstract class CharacterBase : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 1;
     [SerializeField] AnimOperator _animOperator;

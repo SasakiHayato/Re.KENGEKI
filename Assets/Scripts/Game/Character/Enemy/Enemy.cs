@@ -3,7 +3,7 @@ using BehaviourTree;
 using MonoState;
 
 [RequireComponent(typeof(BehaviourTreeUser))]
-public class Enemy : ChatracterBase, IDamageble
+public class Enemy : CharacterBase, IDamageble
 {
     public enum State
     {

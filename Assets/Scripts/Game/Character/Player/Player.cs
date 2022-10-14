@@ -11,14 +11,17 @@ public interface IDodgeEvent
 /// プレイヤーの管理クラス
 /// </summary>
 
-public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEvent
+public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 {
     public enum State
     {
         Idle,
         Move,
         Dodge,
+        Attack,
     }
+
+    [SerializeField] AttackController _attackController;
 
     // Note. 回転の為に使用
     Vector3 _beforePos;
@@ -46,6 +49,7 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
         // 保持データの追加
         _stateMachine
             .SetData(_retentionData)
+            .SetData(_attackController)
             .SetData(Anim);
 
         //  ステートの追加
@@ -53,10 +57,12 @@ public class Player : ChatracterBase, IFieldEventHandler, IDamageble, IDodgeEven
             .AddState(new PlayerStateIdle(), State.Idle)
             .AddState(new PlayerStateMove(), State.Move)
             .AddState(new PlayerStateDodge(), State.Dodge)
+            .AddState(new PlayerStateAttack(), State.Attack)
             .SetRunRequest(State.Idle);
 
         // 入力データの追加
         _inputOperator.Player.Dodge.performed += contextMenu => _retentionData.OnDodge = true;
+        _inputOperator.Player.Attack.performed += contextMenu => _retentionData.OnAttack = true;
     }
 
     void Update()
