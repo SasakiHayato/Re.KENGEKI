@@ -26,6 +26,6 @@ public class GameManager
 
     public Manager GetManager<Manager>(string key) where Manager : IManager
     {
-        return (Manager)_managerDic.First(m => m.Key == key).Value;
+        return (Manager)_managerDic.FirstOrDefault(m => m.Key == key).Value;
     }
 }

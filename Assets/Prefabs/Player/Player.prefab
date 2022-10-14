@@ -187,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 10
   _animOperator: {fileID: 6108349436845010395}
+  _hp: 100
   _attackController: {fileID: 5058377308008446330}
 --- !u!1 &6166134531842603800
 GameObject:

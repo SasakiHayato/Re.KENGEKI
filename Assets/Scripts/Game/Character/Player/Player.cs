@@ -21,6 +21,7 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         Attack,
     }
 
+    [SerializeField] int _hp;
     [SerializeField] AttackController _attackController;
 
     // Note. 回転の為に使用
@@ -63,6 +64,14 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         // 入力データの追加
         _inputOperator.Player.Dodge.performed += contextMenu => _retentionData.OnDodge = true;
         _inputOperator.Player.Attack.performed += contextMenu => OnAttack();
+
+        // UI情報のセット
+        UIPresenter presenter = GameManager.Instance.GetManager<UIPresenter>(nameof(UIPresenter));
+        if (presenter != null)
+        {
+            presenter.ModelUpdate(WindowType.Game, "HP", new object[] { _hp });
+            presenter.ViewUpdate(WindowType.Game, "HP", new object[] { _hp });
+        }
     }
 
     void Update()
