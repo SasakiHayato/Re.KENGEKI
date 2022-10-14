@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7aea44994fe55b41b4a5e9607fdafe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startBGMPath: 
   _sounderCount: 5
   _masterVolume: 0.5
   _bgmVolume: 0.5
   _seVolume: 0.5
-  _soundDataBaseList: []
+  _soundDataBaseList:
+  - {fileID: 11400000, guid: 297bf8600b783884cb2679e74cc28249, type: 2}

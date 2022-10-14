@@ -12,6 +12,7 @@ namespace Sounds
 
     public partial class SoundOperator : MonoBehaviour
     {
+        [SerializeField] string _startBGMPath;
         [SerializeField] int _sounderCount = 5;
         [SerializeField, Range(0, 1)] float _masterVolume = 0.5f;
         [SerializeField, Range(0, 1)] float _bgmVolume = 0.5f;
@@ -38,6 +39,13 @@ namespace Sounds
             _sounderList = new List<Sounder>();
 
             CreateSounder();
+
+            PlayRequester requester = new PlayRequester();
+            requester
+                .SetPath(_startBGMPath)
+                .SetType(SoundType.BGM)
+                .SetUser(null)
+                .Request();
         }
 
         /// <summary>
