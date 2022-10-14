@@ -2,6 +2,7 @@ using UnityEngine;
 using MonoState.Data;
 using System;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 
 /// <summary>
 /// アニメーションの制御クラス
@@ -23,6 +24,14 @@ public class AnimOperator : MonoBehaviour, IRetentionData
     bool _attributeCallBack;
 
     public bool IsEndCurrentAnim { get; private set; }
+
+    public int GetAnimFrameCount(string stateName)
+    {
+        RuntimeAnimatorController runtime = _anim.runtimeAnimatorController;
+        AnimationClip clip = runtime.animationClips.First(r => r.name.Equals(stateName));
+        //Debug.Log($"Clip{clip.length}");
+        return (int)(clip.length * clip.frameRate);
+    }
 
     /// <summary>
     /// Anim.CrossFade();
