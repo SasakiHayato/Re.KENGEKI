@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ViewBase : MonoBehaviour
+public abstract class PresenterBase : MonoBehaviour
 {
     [SerializeField] string _path;
 
@@ -15,5 +15,7 @@ public abstract class ViewBase : MonoBehaviour
 
     protected abstract void Setup();
 
-    public abstract void CallBack(object[] values);
+    public abstract void CallBackView(object[] values);
+
+    public abstract void CallBackModel(object[] values);
 }

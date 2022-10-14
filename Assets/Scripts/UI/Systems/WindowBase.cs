@@ -11,21 +11,21 @@ public abstract class WindowBase : MonoBehaviour
 {
     [SerializeField] WindowType _windowType;
 
-    List<ViewBase> _viewList;
+    List<PresenterBase> _presenterList;
     CanvasGroup _canvasGroup;
 
     public WindowType WindowType => _windowType;
 
-    public List<ViewBase> ViewList => _viewList;
+    public List<PresenterBase> PresenterList => _presenterList;
  
     void Awake()
     {
-        _viewList = new List<ViewBase>();
+        _presenterList = new List<PresenterBase>();
 
         for (int index = 0; index < transform.childCount; index++)
         {
-            ViewBase view = transform.GetChild(index).GetComponent<ViewBase>();
-            _viewList.Add(view);
+            PresenterBase view = transform.GetChild(index).GetComponent<PresenterBase>();
+            _presenterList.Add(view);
         }
 
         _canvasGroup = gameObject.AddComponent<CanvasGroup>();
