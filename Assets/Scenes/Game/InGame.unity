@@ -823,6 +823,7 @@ GameObject:
   - component: {fileID: 1494871446}
   - component: {fileID: 1494871445}
   - component: {fileID: 1494871448}
+  - component: {fileID: 1494871449}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -911,6 +912,15 @@ MonoBehaviour:
   _isDebug: 0
   _user: {fileID: 0}
   _freeLookCamera: {fileID: 613540554}
+--- !u!45 &1494871449
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494871444}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!4 &1667264281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5181230289027068627, guid: d1d403e267329e949b9edbc13020918a, type: 3}
