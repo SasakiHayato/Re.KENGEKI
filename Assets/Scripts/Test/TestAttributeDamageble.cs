@@ -6,6 +6,7 @@ public class TestAttributeDamageble : MonoBehaviour, IDamageble
 {
     public void GetDamage(int damage)
     {
+        Debug.Log(gameObject.name);
         Debug.Log(damage);
     }
 }

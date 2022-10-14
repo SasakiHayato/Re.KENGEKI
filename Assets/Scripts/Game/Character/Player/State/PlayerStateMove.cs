@@ -4,12 +4,12 @@ using System;
 
 public class PlayerStateMove : MonoStateBase
 {
-    PlayerRetentionData _playerRetention;
+    PlayerRetentionData _retentionData;
     AnimOperator _animOperator;
 
     public override void Setup()
     {
-        _playerRetention = UserRetentionData.GetData<PlayerRetentionData>(nameof(PlayerRetentionData));
+        _retentionData = UserRetentionData.GetData<PlayerRetentionData>(nameof(PlayerRetentionData));
         _animOperator = UserRetentionData.GetData<AnimOperator>(nameof(AnimOperator));
     }
 
@@ -25,12 +25,17 @@ public class PlayerStateMove : MonoStateBase
 
     public override Enum Exit()
     {
-        if (_playerRetention.OnDodge)
+        if (_retentionData.OnAttack)
+        {
+            return Player.State.Attack;
+        }
+
+        if (_retentionData.OnDodge)
         {
             return Player.State.Dodge;
         }
 
-        if (_playerRetention.ReadOnMove)
+        if (_retentionData.ReadOnMove)
         {
             return Player.State.Move;
         }

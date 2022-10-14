@@ -6,26 +6,26 @@ public class PlayerStateDodge : MonoStateBase
 {
     Vector2 _inputDir;
 
-    PlayerRetentionData _playerRetention;
+    PlayerRetentionData _retentionData;
     AnimOperator _animOperator;
 
     public override void Setup()
     {
-        _playerRetention = UserRetentionData.GetData<PlayerRetentionData>(nameof(PlayerRetentionData));
+        _retentionData = UserRetentionData.GetData<PlayerRetentionData>(nameof(PlayerRetentionData));
         _animOperator = UserRetentionData.GetData<AnimOperator>(nameof(AnimOperator));
     }
 
     public override void OnEnable()
     {
         // “ü—Í‚ª‚È‚¯‚ê‚ÎPlayer‚ÌŒã‚ë•ûŒü‚ð‘ã“ü
-        if (_playerRetention.ReadInputDir == Vector2.zero)
+        if (_retentionData.ReadInputDir == Vector2.zero)
         {
             Vector3 back = UserRetentionData.User.transform.forward * -1;
             _inputDir = new Vector2(back.x, back.z);
         }
         else
         {
-            _inputDir = _playerRetention.ReadInputDir;
+            _inputDir = _retentionData.ReadInputDir;
         }
         
         string stateName;
@@ -41,19 +41,19 @@ public class PlayerStateDodge : MonoStateBase
 
         _animOperator
             .AttributeWaitAnim()
-            .PlayRequest(stateName, AnimOperator.PlayType.Fade, ChatracterBase.AnimDuration);
+            .PlayRequest(stateName, AnimOperator.PlayType.Fade, CharacterBase.AnimDuration);
     }
 
     public override void Execute()
     {
-        _playerRetention.SetInputDir(_inputDir);
+        _retentionData.SetInputDir(_inputDir);
     }
 
     public override Enum Exit()
     {
         if (_animOperator.IsEndCurrentAnim)
         {
-            _playerRetention.OnDodge = false;
+            _retentionData.OnDodge = false;
             return Player.State.Idle;
         }
         else

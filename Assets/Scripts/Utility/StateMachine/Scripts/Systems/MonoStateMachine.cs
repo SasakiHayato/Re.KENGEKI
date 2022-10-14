@@ -129,7 +129,7 @@ namespace MonoState
         /// ステートの変更
         /// </summary>
         /// <param name="path"></param>
-        public void ChangeState(string path)
+        void ChangeState(string path)
         {
             MonoStateBase monoState = _stateDic.First(d => d.Key == path).Value;
 
