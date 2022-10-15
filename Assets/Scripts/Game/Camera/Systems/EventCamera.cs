@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class EventCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] string _path;
+
+    public string Path => _path;
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        CameraController.Infomation.AddEventCamera(this);
     }
 }
