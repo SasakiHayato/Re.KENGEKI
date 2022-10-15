@@ -13,7 +13,7 @@ public interface IEffectEvent
 
 public class EffectOperator : MonoBehaviour, IManager
 {
-    public static string ParticlePath => "Assets/Resources/Effects/";
+    public static string ParticlePath => "Effects/";
 
     void Awake()
     {

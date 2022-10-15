@@ -46,6 +46,7 @@ public class FieldConnecter : MonoBehaviour
         public float Tolerance => _tolerance;
     }
 
+    [SerializeField] string _effectPath;
     [SerializeField] ConnectData _connectData1;
     [SerializeField] ConnectData _connectData2;
     [SerializeField] EventData _eventData;
@@ -72,9 +73,21 @@ public class FieldConnecter : MonoBehaviour
             ConnectData connectData = _connectDataList[index];
             obj.name = $"Connecter : {connectData.Name}";
 
+            CreateEffect(connectData.Offset);
+
             connectData.ID = index;
             CreateConnecter(obj, connectData);
         }
+    }
+
+    void CreateEffect(Vector3 point)
+    {
+        EffectEventData eventData = new EffectEventData();
+        eventData.EffectEvent = new SetParticleEffect();
+        eventData.Values = new object[] { _effectPath, point };
+
+        EffectOperator effectOperator = GameManager.Instance.GetManager<EffectOperator>(nameof(EffectOperator));
+        effectOperator.Request(eventData);
     }
 
     void CreateConnecter(GameObject obj, ConnectData connectData)
