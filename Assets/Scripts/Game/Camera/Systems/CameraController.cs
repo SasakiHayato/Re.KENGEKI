@@ -1,6 +1,5 @@
 using UnityEngine;
-using Cinemachine;
-using UnityEngine.InputSystem;
+using DG.Tweening;
 
 /// <summary>
 /// カメラ制御クラス
@@ -8,13 +7,20 @@ using UnityEngine.InputSystem;
 
 public partial class CameraController : MonoBehaviour
 {
-    [SerializeField] bool _isDebug;
     [SerializeField] Transform _user;
-    [SerializeField] CinemachineFreeLook _freeLookCamera;
+    [SerializeField] CameraData _data;
     
     InputOperator _inputOperator;
 
-    public static CameraInfomation Data { get; private set; }
+    float _horizontalAngle;
+    float _verticleAngle;
+
+    bool _isEvent;
+
+    public static CameraInfomation Infomation { get; private set; }
+
+    readonly float Coefficient = 0.5f;
+    readonly float RateLimit = 0.2f;
 
     void Awake()
     {
@@ -23,52 +29,135 @@ public partial class CameraController : MonoBehaviour
         _inputOperator = new InputOperator();
         _inputOperator.Enable();
 
-        gameObject.AddComponent<CinemachineBrain>();
-        _freeLookCamera = Instantiate(_freeLookCamera);
+        Infomation = new CameraInfomation(SetUser);
+        Infomation.User = _user;
 
-        Data = new CameraInfomation(SetUser);
-        Data.User = _user;
+        SetUser(_user);
     }
 
     void Update()
     {
-        // ゲームパッドが接続されていれば動かす
-        if (Gamepad.current != null)
+        if (!_isEvent)
         {
-            Vector2 dir = _inputOperator.Player.Look.ReadValue<Vector2>().normalized;
-            Move(dir);
+            Move();
         }
-        
-        Data.SetDir(this);
+
+        LookAt();
+
+        Infomation.SetCameraDir(this);
     }
 
     void OnDestroy()
     {
-        Destroy(gameObject.GetComponent<CinemachineBrain>());
-        Data = null;
+        Infomation = null;
     }
 
     // 使用者の設定
     void SetUser(Transform user)
     {
-        _freeLookCamera.Follow = user;
-        _freeLookCamera.LookAt = user;
-
-        for (int index = 0; index < 3; index++)
-        {
-            _freeLookCamera.GetRig(index).LookAt = user;
-        }
-
-        _freeLookCamera.transform.SetParent(transform);
+        _user = user;
     }
 
     /// <summary>
     /// 使用者を基準に動かす
     /// </summary>
-    /// <param name="dir">方向</param>
-    void Move(Vector2 dir)
+    void Move()
     {
-        _freeLookCamera.m_XAxis.Value = dir.x;
-        _freeLookCamera.m_YAxis.Value = dir.y;
+        Vector2 dir = _inputOperator.Player.Look.ReadValue<Vector2>().normalized;
+
+        Vector3 move = AxisX(dir.x);
+        move.y = AxisY(dir.y);
+
+        // 二次関数
+        float rate = Mathf.Sqrt(Mathf.Abs(move.y)) * Coefficient;
+
+        if (rate < RateLimit)
+        {
+            rate = RateLimit;
+        }
+
+        transform.position = (move * _data.Distance / rate) + (_user.position + _data.OffsetPosition);
+    }
+
+    Vector3 AxisX(float value)
+    {
+        if (value != 0 && _data.Sencivity.x <= Mathf.Abs(value))
+        {
+            _horizontalAngle += _data.MoveSpeed.x * value;
+        }
+
+        float rad = _horizontalAngle * Mathf.Deg2Rad;
+        
+        return new Vector3(Mathf.Sin(rad), 0, Mathf.Cos(rad));
+    }
+
+    float AxisY(float value)
+    {
+        if (value != 0 && _data.Sencivity.y <= Mathf.Abs(value))
+        {
+            _verticleAngle += _data.MoveSpeed.y * value;
+        }
+
+        if (_data.LimitHeghtAngle < _verticleAngle)
+        {
+            _verticleAngle = _data.LimitHeghtAngle;
+        }
+
+        if (_data.LimitLowAngle > _verticleAngle)
+        {
+            _verticleAngle = _data.LimitLowAngle;
+        }
+
+        float rad = _verticleAngle * Mathf.Deg2Rad;
+
+        return Mathf.Sin(rad);
+    }
+
+    /// <summary>
+    /// 使用者をとらえる
+    /// </summary>
+    void LookAt()
+    {
+        Vector3 offset = Infomation.User.position + _data.OffsetView.normalized;
+        Vector3 forward = (offset - transform.position).normalized;
+
+        transform.rotation = Quaternion.LookRotation(forward);
+    }
+
+    public void TransitionEventCm(string path, float duration = 0.2f)
+    {
+        EventCamera camera = Infomation.GetEventCamera(path);
+
+        transform
+            .DOMove(camera.transform.position, duration)
+            .SetEase(Ease.Linear);
+
+        _isEvent = true;
+    }
+
+    public void CallBackTransition(float duration = 0.2f)
+    {
+        if (!_isEvent) 
+        {
+            return;
+        }
+
+        Vector3 move = AxisX(0);
+        move.y = AxisY(0);
+
+        // 二次関数
+        float rate = Mathf.Sqrt(Mathf.Abs(move.y)) * Coefficient;
+
+        if (rate < RateLimit)
+        {
+            rate = RateLimit;
+        }
+
+        Vector3 position = (move * _data.Distance / rate) + (_user.position + _data.OffsetPosition);
+
+        transform
+            .DOMove(position, duration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() => _isEvent = false);
     }
 }

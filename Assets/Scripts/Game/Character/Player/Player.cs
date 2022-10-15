@@ -42,9 +42,9 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
     protected override void Setup()
     {
-        if (CameraController.Data != null)
+        if (CameraController.Infomation != null)
         {
-            CameraController.Data.User = transform;
+            CameraController.Infomation.User = transform;
         }
 
         // ï€éùÉfÅ[É^ÇÃí«â¡
@@ -107,10 +107,10 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         Vector2 dir = _retentionData.ReadInputDir;
         Vector3 move;
 
-        if (CameraController.Data != null)
+        if (CameraController.Infomation != null)
         {
-            Vector3 forward = CameraController.Data.PlaneFoward * dir.y;
-            Vector3 right = CameraController.Data.PlaneRight * dir.x;
+            Vector3 forward = CameraController.Infomation.PlaneFoward * dir.y;
+            Vector3 right = CameraController.Infomation.PlaneRight * dir.x;
 
             move = (forward + right).normalized * MoveSpeed;
         }
@@ -129,10 +129,10 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         Vector2 dir = _retentionData.ReadInputDir;
         Vector3 rotate;
 
-        if (CameraController.Data != null)
+        if (CameraController.Infomation != null)
         {
-            Vector3 forward = CameraController.Data.PlaneFoward * dir.y;
-            Vector3 right = CameraController.Data.PlaneRight * dir.x;
+            Vector3 forward = CameraController.Infomation.PlaneFoward * dir.y;
+            Vector3 right = CameraController.Infomation.PlaneRight * dir.x;
 
             rotate = new Vector3(forward.x + right.x, 0, forward.z + right.z).normalized;
         }
