@@ -42,6 +42,11 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
     protected override void Setup()
     {
+        if (CameraController.Data != null)
+        {
+            CameraController.Data.User = transform;
+        }
+
         // •Ûƒf[ƒ^‚Ì’Ç‰Á
         _stateMachine
             .SetData(_retentionData)

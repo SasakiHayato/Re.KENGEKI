@@ -1,15 +1,19 @@
 using UnityEngine;
+using System;
 
 /// <summary>
 /// カメラのデータクラス
 /// </summary>
 
-public class CameraData
+public class CameraInfomation
 {
-    public CameraData(Transform user)
+    public CameraInfomation(Action<Transform> action)
     {
-        User = user;
+        _action = action;
     }
+
+    Transform _user;
+    Action<Transform> _action;
 
     public Vector3 Foward { get; private set; }
     public Vector3 PlaneFoward { get; private set; }
@@ -18,7 +22,19 @@ public class CameraData
 
     public Vector3 PlaneRight { get; private set; }
 
-    public Transform User { get; private set; }
+    public Transform User
+    {
+        get
+        {
+            return _user;
+        }
+
+        set
+        {
+            _user = value;
+            _action.Invoke(_user);
+        }
+    }
 
     public void SetDir(CameraController camera)
     {

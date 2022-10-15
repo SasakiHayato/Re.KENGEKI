@@ -1037,6 +1037,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4303276027766377033, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: managedReferences[87024491039555584]
+      value: Assembly-CSharp ActionAttack
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303276027766377033, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: managedReferences[87024332900401154]._attributeDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303276027766377033, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: managedReferences[87024332900401155]._attributeDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303276027766377033, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: managedReferences[87024472840470529]._attributeDistance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303276027766377033, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: _treeDataList.Array.data[1]._treeData._executeList.Array.data[1]._action._actionList.Array.data[0]
+      value: 87024491039555584
+      objectReference: {fileID: 0}
     - target: {fileID: 4303276027766377034, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1084,6 +1104,18 @@ PrefabInstance:
     - target: {fileID: 4303276027766377035, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6568261511557768684, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: _bulletData._delayTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6568261511557768684, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: _bulletData._moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6568261511557768684, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}
+      propertyPath: _bulletData._modelList.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e34a18002bb81549ae17fe4cfa73a41, type: 3}

@@ -17,6 +17,7 @@ public class EnemyStateAttack : MonoStateBase
 
     public override void OnEnable()
     {
+        _retentionData.MoveDir = Vector3.zero;
         _bulletOperator.ShotRequest();
     }
 
@@ -27,6 +28,8 @@ public class EnemyStateAttack : MonoStateBase
 
     public override Enum Exit()
     {
-        return Enemy.State.Attack;
+        _retentionData.OnAttack = false;
+
+        return Enemy.State.Idle;
     }
 }

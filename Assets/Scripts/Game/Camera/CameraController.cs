@@ -14,7 +14,7 @@ public partial class CameraController : MonoBehaviour
     
     InputOperator _inputOperator;
 
-    public static CameraData Data { get; private set; }
+    public static CameraInfomation Data { get; private set; }
 
     void Awake()
     {
@@ -26,7 +26,8 @@ public partial class CameraController : MonoBehaviour
         gameObject.AddComponent<CinemachineBrain>();
         _freeLookCamera = Instantiate(_freeLookCamera);
 
-        Data = new CameraData(_user);
+        Data = new CameraInfomation(SetUser);
+        Data.User = _user;
     }
 
     void Start()
@@ -45,7 +46,7 @@ public partial class CameraController : MonoBehaviour
             Vector2 dir = _inputOperator.Player.Look.ReadValue<Vector2>().normalized;
             Move(dir);
         }
-
+        
         Data.SetDir(this);
     }
 
@@ -56,10 +57,15 @@ public partial class CameraController : MonoBehaviour
     }
 
     // égópé“ÇÃê›íË
-    public void SetUser(Transform user)
+    void SetUser(Transform user)
     {
         _freeLookCamera.Follow = user;
         _freeLookCamera.LookAt = user;
+
+        for (int index = 0; index < 3; index++)
+        {
+            _freeLookCamera.GetRig(index).LookAt = user;
+        }
 
         _freeLookCamera.transform.SetParent(transform);
     }

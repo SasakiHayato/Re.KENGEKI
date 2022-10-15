@@ -27,6 +27,11 @@ public class EnemyStateIdle : MonoStateBase
 
     public override Enum Exit()
     {
+        if (_retentionData.OnAttack)
+        {
+            return Enemy.State.Attack;
+        }
+
         if (_retentionData.MoveDir != Vector3.zero)
         {
             return Enemy.State.Move;
