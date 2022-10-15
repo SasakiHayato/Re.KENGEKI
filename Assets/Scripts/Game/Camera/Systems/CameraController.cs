@@ -30,14 +30,6 @@ public partial class CameraController : MonoBehaviour
         Data.User = _user;
     }
 
-    void Start()
-    {
-        if (_isDebug)
-        {
-            SetUser(_user);
-        }
-    }
-
     void Update()
     {
         // ゲームパッドが接続されていれば動かす
