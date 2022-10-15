@@ -12,7 +12,6 @@ public class Enemy : CharacterBase, IDamageble
         Attack,
     }
 
-    [SerializeField] int _hp;
     [SerializeField] BulletOperator _bulletOperator;
 
     Vector3 _beforePos;
@@ -80,9 +79,9 @@ public class Enemy : CharacterBase, IDamageble
     // ‰º‹L, IDamageble
     public void GetDamage(int damage)
     {
-        _hp -= damage;
+        HP -= damage;
 
-        if (_hp <= 0)
+        if (HP <= 0)
         {
             Anim.SetRootMotion(true);
             Anim

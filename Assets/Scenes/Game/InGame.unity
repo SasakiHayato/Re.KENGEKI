@@ -724,7 +724,7 @@ GameObject:
   - component: {fileID: 1375251431}
   - component: {fileID: 1375251430}
   - component: {fileID: 1375251429}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Field2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1023,7 +1023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1164139343621967416, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: MasterCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 1164139343706672526, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}
       propertyPath: m_RaycastTarget
@@ -1059,7 +1059,7 @@ GameObject:
   - component: {fileID: 1895594784}
   - component: {fileID: 1895594783}
   - component: {fileID: 1895594782}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Field1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

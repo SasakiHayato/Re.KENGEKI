@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 6165765639018505182}
   - component: {fileID: 6165765639018505177}
   - component: {fileID: 6165765639018505178}
+  - component: {fileID: 4503024805071437363}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -186,9 +187,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 10
-  _animOperator: {fileID: 6108349436845010395}
   _hp: 100
+  _animOperator: {fileID: 6108349436845010395}
   _attackController: {fileID: 5058377308008446330}
+  _groundChecker: {fileID: 4503024805071437363}
+--- !u!114 &4503024805071437363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6165765639018505183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf5874ccb1e3644fa16ad5f7b5c05e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _viewLine: 1
+  _distance: 1.7
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &6166134531842603800
 GameObject:
   m_ObjectHideFlags: 0

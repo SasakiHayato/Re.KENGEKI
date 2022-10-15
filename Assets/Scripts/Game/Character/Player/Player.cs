@@ -21,11 +21,8 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         Attack,
     }
 
-    [SerializeField] int _hp;
     [SerializeField] AttackController _attackController;
-
-    // Note. 回転の為に使用
-    Vector3 _beforePos;
+    [SerializeField] GroundChecker _groundChecker;
 
     InputOperator _inputOperator;
 
@@ -45,8 +42,6 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
     protected override void Setup()
     {
-        _beforePos = transform.position;
-
         // 保持データの追加
         _stateMachine
             .SetData(_retentionData)
@@ -69,8 +64,8 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         UIPresenter presenter = GameManager.Instance.GetManager<UIPresenter>(nameof(UIPresenter));
         if (presenter != null)
         {
-            presenter.ModelUpdate(WindowType.Game, "HP", new object[] { _hp });
-            presenter.ViewUpdate(WindowType.Game, "HP", new object[] { _hp });
+            presenter.ModelUpdate(WindowType.Game, "HP", new object[] { HP });
+            presenter.ViewUpdate(WindowType.Game, "HP", new object[] { HP });
         }
     }
 
@@ -84,7 +79,15 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
             _retentionData.SetInputDir(inputDir);
         }
 
-        Move();
+        if (_groundChecker.IsGround)
+        {
+            Move();
+        }
+        else
+        {
+            Rigidbody.velocity = new Vector3(0, Gravity, 0);
+        }
+        
         Rotate();
     }
 
@@ -104,7 +107,7 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
             Vector3 forward = CameraController.Data.PlaneFoward * dir.y;
             Vector3 right = CameraController.Data.PlaneRight * dir.x;
 
-            move = (forward + right) * MoveSpeed;
+            move = (forward + right).normalized * MoveSpeed;
         }
         else
         {
@@ -118,15 +121,25 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
     void Rotate()
     {
-        Vector3 diff = transform.position - _beforePos;
-        diff.y = 0;
+        Vector2 dir = _retentionData.ReadInputDir;
+        Vector3 rotate;
 
-        if (diff.magnitude > 0.01f)
+        if (CameraController.Data != null)
         {
-            transform.rotation = Quaternion.LookRotation(diff);
+            Vector3 forward = CameraController.Data.PlaneFoward * dir.y;
+            Vector3 right = CameraController.Data.PlaneRight * dir.x;
+
+            rotate = new Vector3(forward.x + right.x, 0, forward.z + right.z).normalized;
+        }
+        else
+        {
+            rotate = new Vector3(dir.x, 0, dir.y);
         }
 
-        _beforePos = transform.position;
+        if (rotate.magnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.LookRotation(rotate);
+        }
     }
 
     void OnAttack()
