@@ -101,8 +101,8 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
         if (CameraController.Data != null)
         {
-            Vector3 forward = CameraController.Data.Foward * dir.y;
-            Vector3 right = CameraController.Data.Right * dir.x;
+            Vector3 forward = CameraController.Data.PlaneFoward * dir.y;
+            Vector3 right = CameraController.Data.PlaneRight * dir.x;
 
             move = (forward + right) * MoveSpeed;
         }
