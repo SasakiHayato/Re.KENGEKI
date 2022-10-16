@@ -180,7 +180,9 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         // エフェクトイベントの登録
         EffectEventData eventData = new EffectEventData();
         eventData.EffectEvent = new SlowTimeEffect();
-        eventData.Values = new object[] { 0.5f, 0.5f };
+
+        // 引数1. TimeScale; 引数2. Timer;
+        eventData.Values = new object[] { 0.5f, 0.25f };
         eventData.CallBack = () => { ExecutionDodgeEvent = false; };
 
         EffectOperator effectOperator = GameManager.Instance.GetManager<EffectOperator>(nameof(EffectOperator));
