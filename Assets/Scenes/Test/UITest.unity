@@ -513,7 +513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1164139343621967416, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: MasterCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 1164139343706672561, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}
       propertyPath: m_AnchorMax.x
@@ -527,5 +527,17 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1421833681}
+    - target: {fileID: 4739883654369154435, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8454106247618246775, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503411009527192760, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c1a0a3e718f4154389ae7ade6765ffb, type: 3}

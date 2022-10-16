@@ -4,7 +4,7 @@ public class TestUIRequest : MonoBehaviour
 {
     [SerializeField] WindowType _windowType;
     [SerializeField] string _path;
-    [SerializeField] int _intValue;
+    [SerializeField] string _intValue;
 
     void Start()
     {
@@ -20,6 +20,6 @@ public class TestUIRequest : MonoBehaviour
     public void RequestModel()
     {
         UIPresenter presenter = GameManager.Instance.GetManager<UIPresenter>(nameof(UIPresenter));
-        presenter.ModelUpdate(_windowType, _path, new object[] { _intValue });
+        presenter.ModelUpdate(_windowType, _path, new object[] { true, _intValue });
     }
 }

@@ -1,11 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UniRx;
 
 public class UIPresenter : MonoBehaviour, IManager
 {
     List<WindowBase> _windowList;
+
+    ReactiveProperty<bool> _reactiveBool = new ReactiveProperty<bool>();
 
     void Awake()
     {
@@ -14,10 +17,27 @@ public class UIPresenter : MonoBehaviour, IManager
         for (int index = 0; index < transform.childCount; index++)
         {
             WindowBase window = transform.GetChild(index).GetComponent<WindowBase>();
-            _windowList.Add(window);
+
+            if (window != null)
+            {
+                _windowList.Add(window);
+            }
         }
 
         GameManager.Instance.AddManager(this);
+    }
+
+    void Start()
+    {
+        _reactiveBool
+            .ObserveEveryValueChanged(_ => Gamepad.current != null)
+            .Subscribe(isConnect => SetFilter(isConnect))
+            .AddTo(this);
+    }
+
+    void SetFilter(bool isFilter)
+    {
+        _windowList.ForEach(w => w.Filter(isFilter));
     }
 
     public void ViewUpdate(WindowType type, string path, object[] values = null)
