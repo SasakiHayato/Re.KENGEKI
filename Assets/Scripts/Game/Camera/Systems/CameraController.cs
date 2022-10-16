@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 using DG.Tweening;
 
 /// <summary>
@@ -9,14 +10,17 @@ public partial class CameraController : MonoBehaviour
 {
     [SerializeField] Transform _user;
     [SerializeField] CameraData _data;
+    [SerializeField] CameraTaregtData _taregtData;
     
     InputOperator _inputOperator;
+
+    float _lockAtTimer;
 
     float _horizontalAngle;
     float _verticleAngle;
 
     bool _isEvent;
-
+    
     public static CameraInfomation Infomation { get; private set; }
 
     readonly float Coefficient = 0.5f;
@@ -35,6 +39,11 @@ public partial class CameraController : MonoBehaviour
         SetUser(_user);
     }
 
+    void Start()
+    {
+        _inputOperator.Player.LockOn.performed += contextMenu => SetLockOn();
+    }
+
     void Update()
     {
         if (!_isEvent)
@@ -42,7 +51,7 @@ public partial class CameraController : MonoBehaviour
             Move();
         }
 
-        LookAt();
+        LockAt();
 
         Infomation.SetCameraDir(this);
     }
@@ -116,12 +125,57 @@ public partial class CameraController : MonoBehaviour
     /// <summary>
     /// Žg—pŽÒ‚ð‚Æ‚ç‚¦‚é
     /// </summary>
-    void LookAt()
+    void LockAt()
     {
-        Vector3 offset = Infomation.User.position + _data.OffsetView.normalized;
+        Vector3 offset;
+        _lockAtTimer += Time.deltaTime * _data.DumpingSpeed;
+
+        if (_taregtData.Target != null)
+        {
+            offset = _taregtData.Target.position + _data.OffsetView.normalized;
+        }
+        else
+        {
+            offset = Infomation.User.position + _data.OffsetView.normalized;
+        }
+
         Vector3 forward = (offset - transform.position).normalized;
 
-        transform.rotation = Quaternion.LookRotation(forward);
+        Quaternion rotate = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(forward), _lockAtTimer);
+        transform.rotation = rotate;
+
+        if (rotate == transform.rotation)
+        {
+            _lockAtTimer = 0;
+        }
+    }
+
+    void SetLockOn()
+    {
+        if (_taregtData.Target != null)
+        {
+            _taregtData.Target = null;
+            return;
+        }
+        
+        try
+        {
+            float dist = _taregtData.AttaributeDistance;
+
+            // Target‚ÌŽæ“¾
+            Transform target = Infomation.CmTargetList
+            .Where(c => c.TargetRenderer.isVisible)
+            .Where(c => Vector3.Distance(c.Target().position, transform.position) < dist)
+            .OrderBy(c => Vector3.Dot(transform.forward, transform.position - c.Target().position))
+            .FirstOrDefault()
+            .Target();
+
+            _taregtData.Target = target;
+        }
+        catch
+        {
+            _taregtData.Target = null;
+        }
     }
 
     public void TransitionEventCm(string path, float duration = 0.2f)

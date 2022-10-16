@@ -13,11 +13,14 @@ public class CameraInfomation
     {
         _action = action;
         _eventCameraList = new List<EventCamera>();
+        CmTargetList = new List<ICmTarget>();
     }
 
     Transform _user;
     Action<Transform> _action;
     List<EventCamera> _eventCameraList;
+    
+    public List<ICmTarget> CmTargetList { get; private set; }
 
     public Vector3 Foward { get; private set; }
     public Vector3 PlaneFoward { get; private set; }
@@ -55,5 +58,10 @@ public class CameraInfomation
     public EventCamera GetEventCamera(string path)
     {
         return _eventCameraList.First(e => e.Path == path);
+    }
+
+    public void AddITarget(ICmTarget target)
+    {
+        CmTargetList.Add(target);
     }
 }
