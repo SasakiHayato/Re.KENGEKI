@@ -28,7 +28,19 @@ public class CounterTextView : MonoBehaviour
 
     public void ViewUpdate(int id)
     {
-        Image source = _viewDataLsit.First(v => v.ID == id).Source;
-        source.transform.SetAsLastSibling();
+        foreach (ViewData data in _viewDataLsit)
+        {
+            Image source = data.Source;
+            
+            if (data.ID == id)
+            {
+                source.color = new Color(source.color.r, source.color.g, source.color.b, 1);
+                source.transform.SetAsLastSibling();
+            }
+            else
+            {
+                source.color = new Color(source.color.r, source.color.g, source.color.b, 0.5f);
+            }
+        }
     }
 }

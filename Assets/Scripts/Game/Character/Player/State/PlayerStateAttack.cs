@@ -28,21 +28,32 @@ public class PlayerStateAttack : MonoStateBase
         {
             _stateIndex = 0;
         }
-
+        
+        AttackType attackType;
         string stateName;
 
         if (_retentionData.CounterID != int.MinValue)
         {
+            attackType = AttackType.Special;
             stateName = _stateNameCounter[_retentionData.CounterID];
         }
         else
         {
+            attackType = AttackType.Usually;
             stateName = _stateNameArray[_stateIndex];
         }
-
+        
         int frameCount = _animOperator.GetAnimFrameCount(stateName);
-        _attackController.Request(frameCount);
 
+        if (attackType == AttackType.Special)
+        {
+            _attackController.RequestAt(attackType, _retentionData.CounterID, frameCount);
+        }
+        else
+        {
+            _attackController.Request(attackType, frameCount);
+        }
+        
         _animOperator
             .AttributeWaitAnim()
             .PlayRequest(stateName, AnimOperator.PlayType.Fade, CharacterBase.AnimDuration);
@@ -63,8 +74,9 @@ public class PlayerStateAttack : MonoStateBase
 
         if (_attackController.OnNext && _retentionData.OnNextAttack)
         {
-            _retentionData.OnNextAttack = false;
             _stateIndex++;
+            _retentionData.OnNextAttack = false;
+
             OnEnable();
             return Player.State.Attack;
         }

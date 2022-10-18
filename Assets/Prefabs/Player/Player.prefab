@@ -45,16 +45,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 6294866763026134316}
-  _infomationList:
-  - _isActiveFrame: 9
-    _endActiveFreme: 17
-    _attributeNextFeme: 30
-  - _isActiveFrame: 4
-    _endActiveFreme: 10
-    _attributeNextFeme: 25
-  - _isActiveFrame: 21
-    _endActiveFreme: 35
-    _attributeNextFeme: 60
+  _dataList:
+  - _attackType: 0
+    _attackInfomationList:
+    - _isActiveFrame: 9
+      _endActiveFreme: 15
+      _attributeNextFeme: 21
+    - _isActiveFrame: 4
+      _endActiveFreme: 10
+      _attributeNextFeme: 20
+    - _isActiveFrame: 21
+      _endActiveFreme: 35
+      _attributeNextFeme: 60
+  - _attackType: 1
+    _attackInfomationList:
+    - _isActiveFrame: 10
+      _endActiveFreme: 20
+      _attributeNextFeme: 35
+    - _isActiveFrame: 15
+      _endActiveFreme: 30
+      _attributeNextFeme: 50
 --- !u!1 &6165765639018505183
 GameObject:
   m_ObjectHideFlags: 0
