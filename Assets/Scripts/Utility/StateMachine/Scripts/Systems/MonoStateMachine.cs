@@ -15,15 +15,6 @@ namespace MonoState
 
     public class MonoStateMachine<User> where User : MonoBehaviour
     {
-        User _user;
-
-        bool _isRun;
-
-        Dictionary<string, MonoStateBase> _stateDic;
-        CurrentMonoStateData _currentMonoState;
-
-        UserRetentionData _userRetentionData;
-
         // 現在のステート保持クラス
         class CurrentMonoStateData
         {
@@ -40,7 +31,18 @@ namespace MonoState
                 MonoState = state;
             }
         }
-        
+
+        User _user;
+
+        bool _isRun;
+
+        Dictionary<string, MonoStateBase> _stateDic;
+        CurrentMonoStateData _currentMonoState;
+
+        UserRetentionData _userRetentionData;
+
+        public string CurrentStatePath => _currentMonoState.Path;
+
         /// <summary>
         /// 初期化
         /// </summary>

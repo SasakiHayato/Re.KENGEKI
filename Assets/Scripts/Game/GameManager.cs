@@ -9,6 +9,13 @@ public interface IManager
     Object Type();
 }
 
+public enum GameInputType
+{
+    Player,
+    UI,
+    Both,
+}
+
 public class GameManager
 {
     // ƒVƒ“ƒOƒ‹ƒgƒ“
@@ -18,6 +25,8 @@ public class GameManager
     Dictionary<string, IManager> _managerDic = new Dictionary<string, IManager>();
 
     public Transform GameUser { get; set; }
+
+    public GameInputType InputType { get; set; }
 
     public void AddManager(IManager manager)
     {

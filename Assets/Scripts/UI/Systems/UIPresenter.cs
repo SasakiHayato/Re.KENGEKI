@@ -45,7 +45,7 @@ public class UIPresenter : MonoBehaviour, IManager
         PresenterBase presenter = _windowList
             .First(w => w.WindowType == type)
             .PresenterList.First(p => p.Path == path);
-
+        
         presenter.CallBackView(values);
     }
 

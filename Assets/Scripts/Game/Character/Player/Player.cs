@@ -76,7 +76,7 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
     void Update()
     {
-        if (FieldEventExecution) return;
+        if (FieldEventExecution || GameManager.Instance.InputType != GameInputType.Player) return;
 
         if (!_retentionData.OnDodge)
         {
@@ -183,10 +183,23 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
 
         // ˆø”1. TimeScale; ˆø”2. Timer;
         eventData.Values = new object[] { 0.5f, 0.25f };
-        eventData.CallBack = () => { ExecutionDodgeEvent = false; };
-
+        
         EffectOperator effectOperator = GameManager.Instance.GetManager<EffectOperator>(nameof(EffectOperator));
         effectOperator.Request(eventData);
+
+        UIInputOperator input = GameManager.Instance.GetManager<UIInputOperator>(nameof(UIInputOperator));
+        
+        CameraController camera = GameManager.Instance.GetManager<CameraController>(nameof(CameraController));
+        camera.TransitionEventCm
+            (
+                "Player", 
+                0.1f, 
+                () => input.RequestOperation
+                (
+                    new UIInputCounter(() => ExecutionDodgeEvent = false), 
+                    () => _stateMachine.CurrentStatePath == State.Dodge.ToString()
+                 )
+            );
     }
 
     public bool ExecutionDodgeEvent { get; private set; }

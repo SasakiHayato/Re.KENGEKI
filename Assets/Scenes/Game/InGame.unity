@@ -824,7 +824,11 @@ MonoBehaviour:
     _limitLowAngle: -50
     _limitHeightAngle: 60
     _moveSpeed: {x: 0.5, y: 0.5}
+    _dumpingSpeed: 7
     _sencivity: {x: 0.2, y: 0.2}
+  _taregtData:
+    _attributeDistance: 20
+    _offsetPosition: {x: 2.5, y: 0, z: 0}
 --- !u!45 &1494871449
 Skybox:
   m_ObjectHideFlags: 0

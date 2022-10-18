@@ -6,13 +6,15 @@ using DG.Tweening;
 /// カメラ制御クラス
 /// </summary>
 
-public partial class CameraController : MonoBehaviour
+public partial class CameraController : MonoBehaviour, IManager
 {
     [SerializeField] Transform _user;
     [SerializeField] CameraData _data;
     [SerializeField] CameraTaregtData _taregtData;
-    
+
+    Camera _camera;
     InputOperator _inputOperator;
+    EventCamera _eventCamera;
 
     float _lockAtTimer;
 
@@ -37,22 +39,24 @@ public partial class CameraController : MonoBehaviour
         Infomation.User = _user;
 
         SetUser(_user);
+
+        GameManager.Instance.AddManager(this);
     }
 
     void Start()
     {
         _inputOperator.Player.LockOn.performed += contextMenu => SetLockOn();
+        _camera = GetComponent<Camera>();
     }
 
     void Update()
     {
-        if (!_isEvent)
+        if (_eventCamera == null)
         {
             Move();
+            LockAt();
         }
-
-        LockAt();
-
+        
         Infomation.SetCameraDir(this);
     }
 
@@ -92,7 +96,15 @@ public partial class CameraController : MonoBehaviour
     {
         if (value != 0 && _data.Sencivity.x <= Mathf.Abs(value))
         {
-            _horizontalAngle += _data.MoveSpeed.x * value;
+            if (Infomation.AxisHrosontal == CmInputType.Standard)
+            {
+                _horizontalAngle -= _data.MoveSpeed.x * value;
+            }
+            else
+            {
+                _horizontalAngle += _data.MoveSpeed.x * value;
+            }
+            
         }
 
         float rad = _horizontalAngle * Mathf.Deg2Rad;
@@ -104,7 +116,14 @@ public partial class CameraController : MonoBehaviour
     {
         if (value != 0 && _data.Sencivity.y <= Mathf.Abs(value))
         {
-            _verticleAngle += _data.MoveSpeed.y * value;
+            if (Infomation.AxisVerticle == CmInputType.Standard)
+            {
+                _verticleAngle += _data.MoveSpeed.y * value;
+            }
+            else
+            {
+                _verticleAngle -= _data.MoveSpeed.y * value;
+            }
         }
 
         if (_data.LimitHeghtAngle < _verticleAngle)
@@ -152,7 +171,7 @@ public partial class CameraController : MonoBehaviour
 
     void SetLockOn()
     {
-        if (_taregtData.Target != null)
+        if (_taregtData.Target != null || _eventCamera != null)
         {
             _taregtData.Target = null;
             return;
@@ -178,20 +197,25 @@ public partial class CameraController : MonoBehaviour
         }
     }
 
-    public void TransitionEventCm(string path, float duration = 0.2f)
+    public void TransitionEventCm(string path, float duration = 0.2f, System.Action action = null)
     {
         EventCamera camera = Infomation.GetEventCamera(path);
 
         transform
             .DOMove(camera.transform.position, duration)
-            .SetEase(Ease.Linear);
-
-        _isEvent = true;
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                _camera.enabled = false;
+                camera.IsView(true);
+                _eventCamera = camera;
+                action?.Invoke();
+            });
     }
 
     public void CallBackTransition(float duration = 0.2f)
     {
-        if (!_isEvent) 
+        if (_eventCamera == null) 
         {
             return;
         }
@@ -212,6 +236,18 @@ public partial class CameraController : MonoBehaviour
         transform
             .DOMove(position, duration)
             .SetEase(Ease.Linear)
-            .OnComplete(() => _isEvent = false);
+            .OnComplete(() => 
+            {
+                _eventCamera.IsView(false);
+                _camera.enabled = true;
+                _eventCamera = null;
+            });
+    }
+
+    // 下記, IManager
+    public string Key => nameof(CameraController);
+    public Object Type()
+    {
+        return this;
     }
 }
