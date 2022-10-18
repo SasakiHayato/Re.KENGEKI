@@ -13,6 +13,9 @@ public class EventCamera : MonoBehaviour
         _camera = GetComponent<Camera>();
         _camera.enabled = false;
 
+        Skybox skybox = gameObject.AddComponent<Skybox>();
+        skybox.material = CameraController.Skybox.material;
+
         if (CameraController.Infomation != null)
         {
             CameraController.Infomation.AddEventCamera(this);

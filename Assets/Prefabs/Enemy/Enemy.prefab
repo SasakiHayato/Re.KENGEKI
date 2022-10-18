@@ -2429,7 +2429,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1014042612465674537}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2513,10 +2513,12 @@ MonoBehaviour:
   _bullet: {fileID: 6464627562245998369, guid: a0dfb740f2ff6de4da9db1266a1fd36b, type: 3}
   _createCount: 5
   _bulletData:
-    _moveSpeed: 0
+    _moveSpeed: 7
     _attackPower: 0
-    _delayTime: 0
-    _modelList: []
+    _delayTime: 0.2
+    _modelList:
+    - _shotType: 0
+      _point: {fileID: 0}
 --- !u!1 &4303276027766377035
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,8 +2651,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 8.5
-  _animOperator: {fileID: 978004343274122587}
   _hp: 0
+  _animOperator: {fileID: 978004343274122587}
   _bulletOperator: {fileID: 6568261511557768684}
 --- !u!114 &4303276027766377033
 MonoBehaviour:
@@ -2707,6 +2709,7 @@ MonoBehaviour:
         _action:
           _actionList:
           - rid: 87024332900401157
+          - rid: 87024568694996993
   references:
     version: 2
     RefIds:
@@ -2733,3 +2736,5 @@ MonoBehaviour:
         _attributeDistance: 10
     - rid: 87024472840470530
       type: {class: ActionIdle, ns: , asm: Assembly-CSharp}
+    - rid: 87024568694996993
+      type: {class: ActionAttack, ns: , asm: Assembly-CSharp}

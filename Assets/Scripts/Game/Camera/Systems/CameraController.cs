@@ -25,6 +25,8 @@ public partial class CameraController : MonoBehaviour, IManager
     
     public static CameraInfomation Infomation { get; private set; }
 
+    public static Skybox Skybox { get; private set; }
+
     readonly float Coefficient = 0.5f;
     readonly float RateLimit = 0.2f;
 
@@ -41,6 +43,8 @@ public partial class CameraController : MonoBehaviour, IManager
         SetUser(_user);
 
         GameManager.Instance.AddManager(this);
+
+        Skybox = GetComponent<Skybox>();
     }
 
     void Start()

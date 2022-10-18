@@ -20,7 +20,7 @@ public class SlowTimeEffect : IEffectEvent
     {
         _timer -= Time.deltaTime;
 
-        return _timer < 0;
+        return _timer <= 0;
     }
 
     public void Initalize()

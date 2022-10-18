@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] int _power;
+
+    Action _action;
     Collider _collider;
 
     void Awake()
@@ -24,12 +27,18 @@ public class Weapon : MonoBehaviour
         _collider.enabled = isEnable;
     }
 
+    public void SetHitAction(Action action)
+    {
+        _action = action;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         IDamageble damageble = other.GetComponent<IDamageble>();
 
         if (damageble != null)
         {
+            _action?.Invoke();
             damageble.GetDamage(_power);
         }
     }

@@ -8,6 +8,13 @@ public enum AttackType
     Special,
 }
 
+public enum AttackEffectType
+{
+    HitStop,
+    Particle,
+    ShakeCm,
+}
+
 [System.Serializable]
 public class AttackData
 {

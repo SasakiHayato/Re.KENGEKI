@@ -23,6 +23,8 @@ public class AttackController : MonoBehaviour, IRetentionData
         AttackInfomation info = _dataList.First(d => d.AttackType == attackType).GetInfo(_infoIndex);
         _weapon.Active(true);
 
+        _weapon.SetHitAction(() => AttributeHitEffect(info.HitEffectTypeList));
+
         OnNext = false;
         OnProcess(info, frameCount).Forget();
     }
@@ -31,6 +33,8 @@ public class AttackController : MonoBehaviour, IRetentionData
     {
         AttackInfomation info = _dataList.First(d => d.AttackType == attackType).GetInfo(requestID);
         _weapon.Active(true);
+
+        _weapon.SetHitAction(() => AttributeHitEffect(info.HitEffectTypeList));
 
         OnNext = false;
         OnProcess(info, frameCount).Forget();
@@ -59,6 +63,32 @@ public class AttackController : MonoBehaviour, IRetentionData
         _infoIndex++;
 
         OnNext = true;
+    }
+
+    void AttributeHitEffect(List<AttackEffectType> typeList)
+    {
+        foreach (AttackEffectType effect in typeList)
+        {
+            EffectEventData effectEventData = new EffectEventData();
+
+            switch (effect)
+            {
+                case AttackEffectType.HitStop:
+                    effectEventData.EffectEvent = new SlowTimeEffect();
+                    effectEventData.Values = new object[] { 0.1f, 0.04f };
+
+                    break;
+                case AttackEffectType.Particle:
+                    effectEventData.EffectEvent = new SetParticleEffect();
+                    effectEventData.Values = new object[] { "Effect_Hit", _weapon.transform.position };
+
+                    break;
+                case AttackEffectType.ShakeCm:
+                    break;
+            }
+
+            GameManager.Instance.GetManager<EffectOperator>(nameof(EffectOperator)).Request(effectEventData);
+        }
     }
 
     /// <summary>

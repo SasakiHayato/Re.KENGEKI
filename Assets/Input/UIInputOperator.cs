@@ -101,10 +101,13 @@ public class UIInputOperator : MonoBehaviour, IManager
 
     void Cancel()
     {
-        if (_operator.Cancel())
+        if (_operator != null)
         {
-            _operator.Initalize();
-            _operator = null;
+            if (_operator.Cancel())
+            {
+                _operator.Initalize();
+                _operator = null;
+            }
         }
     }
 
