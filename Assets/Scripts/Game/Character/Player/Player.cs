@@ -158,7 +158,12 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
             _retentionData.OnNextAttack = false;
             _retentionData.OnAttack = true;
         }
-        
+    }
+
+    public void OnCounter(int counterID)
+    {
+        _retentionData.CounterID = counterID;
+        _retentionData.OnAttack = true;
     }
 
     // 下記, IDamageble
@@ -180,25 +185,28 @@ public class Player : CharacterBase, IFieldEventHandler, IDamageble, IDodgeEvent
         // エフェクトイベントの登録
         EffectEventData eventData = new EffectEventData();
         eventData.EffectEvent = new SlowTimeEffect();
-
         // 引数1. TimeScale; 引数2. Timer;
         eventData.Values = new object[] { 0.5f, 0.25f };
         
         EffectOperator effectOperator = GameManager.Instance.GetManager<EffectOperator>(nameof(EffectOperator));
         effectOperator.Request(eventData);
 
-        UIInputOperator input = GameManager.Instance.GetManager<UIInputOperator>(nameof(UIInputOperator));
-        
         CameraController camera = GameManager.Instance.GetManager<CameraController>(nameof(CameraController));
         camera.TransitionEventCm
             (
                 "Player", 
                 0.1f, 
-                () => input.RequestOperation
-                (
-                    new UIInputCounter(() => ExecutionDodgeEvent = false), 
-                    () => _stateMachine.CurrentStatePath == State.Dodge.ToString()
-                 )
+                () => GameManager.Instance
+                .GetManager<UIInputOperator>(nameof(UIInputOperator))
+                .RequestOperation
+                    (
+                        new UIInputCounter(() => 
+                        {
+                            ExecutionDodgeEvent = false;
+                            _retentionData.OnDodge = false;
+                        }),
+                        () => _stateMachine.CurrentStatePath == State.Dodge.ToString()
+                    )
             );
     }
 

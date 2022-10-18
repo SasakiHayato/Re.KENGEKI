@@ -51,7 +51,7 @@ public class PlayerStateDodge : MonoStateBase
 
     public override Enum Exit()
     {
-        if (_animOperator.IsEndCurrentAnim)
+        if (_animOperator.IsEndCurrentAnim || !_retentionData.OnDodge)
         {
             _retentionData.OnDodge = false;
             return Player.State.Idle;

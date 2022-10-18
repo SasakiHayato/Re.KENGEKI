@@ -31,6 +31,8 @@ public class PlayerRetentionData : MonoBehaviour, IRetentionData
 
     public bool OnAttack { get; set; }
 
+    public int CounterID { get; set; } = int.MinValue;
+
     public bool OnNextAttack { get; set; }
 
     public Vector2 ReadInputDir { get; private set; }

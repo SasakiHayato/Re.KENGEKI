@@ -3,6 +3,7 @@ using System;
 
 public class UIInputCounter : IUIInputEvent
 {
+    Player _player;
     UIPresenter _ui;
     Action _action;
 
@@ -19,6 +20,8 @@ public class UIInputCounter : IUIInputEvent
     {
         _ui = GameManager.Instance.GetManager<UIPresenter>(nameof(UIPresenter));
         _ui.ViewUpdate(WindowType.Game, "CounterText", new object[] { true, 0 });
+
+        _player = GameManager.Instance.GameUser.GetComponent<Player>();
 
         Time.timeScale = 0.1f;
     }
@@ -47,7 +50,7 @@ public class UIInputCounter : IUIInputEvent
 
     public void Submit()
     {
-        
+        _player.OnCounter(_inputValue);
     }
 
     public bool Cancel()

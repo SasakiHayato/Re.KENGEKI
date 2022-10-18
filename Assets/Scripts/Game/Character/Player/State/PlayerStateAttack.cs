@@ -13,6 +13,7 @@ public class PlayerStateAttack : MonoStateBase
 
     int _stateIndex;
     string[] _stateNameArray = new string[] {"Attack1", "Attack2" ,"Attack3" };
+    string[] _stateNameCounter = new string[] { "Counter_Slash", "Counter_Attract" };
 
     public override void Setup()
     {
@@ -28,7 +29,16 @@ public class PlayerStateAttack : MonoStateBase
             _stateIndex = 0;
         }
 
-        string stateName = _stateNameArray[_stateIndex];
+        string stateName;
+
+        if (_retentionData.CounterID != int.MinValue)
+        {
+            stateName = _stateNameCounter[_retentionData.CounterID];
+        }
+        else
+        {
+            stateName = _stateNameArray[_stateIndex];
+        }
 
         int frameCount = _animOperator.GetAnimFrameCount(stateName);
         _attackController.Request(frameCount);
@@ -74,6 +84,7 @@ public class PlayerStateAttack : MonoStateBase
     {
         _retentionData.OnAttack = false;
         _retentionData.OnNextAttack = false;
+        _retentionData.CounterID = int.MinValue;
         _attackController.Cancel();
         _stateIndex = 0;
     }

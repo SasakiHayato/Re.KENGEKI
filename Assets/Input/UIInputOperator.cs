@@ -91,9 +91,12 @@ public class UIInputOperator : MonoBehaviour, IManager
 
     void Submit()
     {
-        _operator.Submit();
-        _operator.Initalize();
-        _operator = null;
+        if (_operator != null)
+        {
+            _operator.Submit();
+            _operator.Initalize();
+            _operator = null;
+        }
     }
 
     void Cancel()
